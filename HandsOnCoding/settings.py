@@ -34,13 +34,16 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'BusinessLogic',
+    'BusinessLogic.apps.BusinesslogicConfig',
     # Debug Toolbar
     'debug_toolbar',
     # ...
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
