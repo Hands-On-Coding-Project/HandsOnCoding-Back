@@ -34,9 +34,12 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'BusinessLogic',
+    # Debug Toolbar
+    'debug_toolbar',
+    # ...
 ]
 
 MIDDLEWARE = [
@@ -47,6 +50,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Debug Toolbar
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # ...
+]
+
+INTERNAL_IPS =[
+    # Debug Toolbar
+    '127.0.0.1',
+    # ...
 ]
 
 ROOT_URLCONF = 'HandsOnCoding.urls'
