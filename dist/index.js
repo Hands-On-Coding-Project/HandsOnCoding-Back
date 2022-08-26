@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const body_parser_1 = __importDefault(require("body-parser"));
+const dotenv_1 = __importDefault(require("dotenv"));
+const steps_1 = require("./routes/steps");
+dotenv_1.default.config();
+const port = process.env.PORT;
+const app = (0, express_1.default)();
+app.use(body_parser_1.default.json());
+app.use("/api/steps", steps_1.StepsRouter);
+app.get("/api", (req, res) => {
+    res.send("<h1>Welcome to the Hands On Coding API!</h1>" +
+        '<li>Steps: <a href="steps">"/steps"</a></li>');
+});
+app.listen(port, () => {
+    console.log(`🦌 API is listening on port http://localhost:${port}/api`);
+});
+//# sourceMappingURL=index.js.map

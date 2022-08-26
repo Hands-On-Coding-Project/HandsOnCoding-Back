@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url = env("DATABASE_URL")
+}
+
+model Step {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  description String
+
+  template Template?
+
+  solution  Solution?
+}
+
+model Template {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  content String
+
+  stepId String @db.ObjectId @unique
+  step  Step @relation(fields: [stepId], references: [id])
+}
+
+model Solution {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  content String
+
+  stepId String @db.ObjectId @unique
+  step  Step @relation(fields: [stepId], references: [id])
+}
