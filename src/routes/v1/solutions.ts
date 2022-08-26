@@ -1,13 +1,11 @@
-import { Step } from "@prisma/client";
 import express, {Router, Request, Response} from "express";
-import { deleteStep, updateStep } from "../services/steps";
-import { getSteps, getStep, createStep } from "../services/steps";
+import { getSolution, getSolutions, createSolution, updateSolution, deleteSolution } from "../../services/solutions";
 
 const router: Router = express.Router();
 
 // GET
 router.route("/").get((req: Request, res: Response) => {
-  getSteps()
+  getSolutions()
   .then((v) => {
     res.status(200)
     res.send(v)
@@ -18,7 +16,7 @@ router.route("/").get((req: Request, res: Response) => {
 });
 
 router.route("/:id").get((req: Request, res: Response) => {
-  getStep(req.params.id)
+  getSolution(req.params.id)
   .then((v) => {
     res.status(200)
     res.send(v)
@@ -30,7 +28,7 @@ router.route("/:id").get((req: Request, res: Response) => {
 
 // POST
 router.route("/").post((req: Request, res: Response) => {
-  createStep(req.body)
+  createSolution(req.body)
   .then((v) => {
     res.status(201)
     res.send(v)
@@ -42,7 +40,7 @@ router.route("/").post((req: Request, res: Response) => {
 
 // PUT
 router.route("/:id").put((req: Request, res: Response) => {
-  updateStep(req.params.id,req.body)
+  updateSolution(req.params.id,req.body)
   .then((v) => {
     res.status(200)
     res.send(v)
@@ -54,7 +52,7 @@ router.route("/:id").put((req: Request, res: Response) => {
 
 // DELETE
 router.route("/:id").delete((req: Request, res: Response) => {
-  deleteStep(req.params.id)
+  deleteSolution(req.params.id)
   .then((v) => {
     res.status(204)
     res.send(v)
@@ -64,4 +62,4 @@ router.route("/:id").delete((req: Request, res: Response) => {
   })
 });
 
-export {router as StepsRouter};
+export {router as SolutionsRouter};

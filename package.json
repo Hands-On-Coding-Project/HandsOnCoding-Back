@@ -8,10 +8,14 @@
     "build": "tsc",
     "prestart": "npm run build",
     "start": "dotenv -e .env.development node .",
+
     "dev": "npm run start",
-    "prisma:studio-dev": "dotenv -e .env.development -- npx prisma studio",
+    "ps-dev": "dotenv -e .env.development -- npx prisma studio",
+    "db-dev":"dotenv -e .env.development -- npx prisma db push",
+
     "test": "dotenv -e .env.test node .",
-    "prisma:studio-test": "dotenv -e .env.test -- npx prisma studio"
+    "ps-test": "dotenv -e .env.test -- npx prisma studio",
+    "db-test":"dotenv -e .env.development -- npx prisma db push"
   },
   "keywords": [],
   "author": "",

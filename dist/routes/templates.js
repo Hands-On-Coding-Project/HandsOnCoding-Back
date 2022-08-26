@@ -6,11 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StepsRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const steps_1 = require("../services/steps");
+const steps_2 = require("../services/steps");
 const router = express_1.default.Router();
 exports.StepsRouter = router;
 // GET
 router.route("/").get((req, res) => {
-    (0, steps_1.getSteps)()
+    (0, steps_2.getSteps)()
         .then((v) => {
         res.status(200);
         res.send(v);
@@ -20,7 +21,7 @@ router.route("/").get((req, res) => {
     });
 });
 router.route("/:id").get((req, res) => {
-    (0, steps_1.getStep)(req.params.id)
+    (0, steps_2.getStep)(req.params.id)
         .then((v) => {
         res.status(200);
         res.send(v);
@@ -31,7 +32,7 @@ router.route("/:id").get((req, res) => {
 });
 // POST
 router.route("/").post((req, res) => {
-    (0, steps_1.createStep)(req.body)
+    (0, steps_2.createStep)(req.body)
         .then((v) => {
         res.status(201);
         res.send(v);
@@ -62,4 +63,4 @@ router.route("/:id").delete((req, res) => {
         res.sendStatus(400);
     });
 });
-//# sourceMappingURL=steps.js.map
+//# sourceMappingURL=templates.js.map

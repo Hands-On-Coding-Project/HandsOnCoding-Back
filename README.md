@@ -6,5 +6,8 @@ npm install
 ## Run app
 npm start
 
+## Push data base
+npm run db-[test/dev]
+
 ## Start prisma studio
-npm run prisma:studio-[test/dev]
+npm run ps-[test/dev]

@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 
-import { StepsRouter } from "./routes/steps";
+import { V1Router } from './routes/v1/routes'
 
 dotenv.config();
 
@@ -10,7 +10,7 @@ const port = process.env.PORT;
 const app: Express = express();
 
 app.use(bodyParser.json());
-app.use("/api/steps", StepsRouter);
+app.use("/api/v1", V1Router);
 
 app.get( "/api", ( req: Request, res: Response) => {
     res.send( "<h1>Welcome to the Hands On Coding API!</h1>" +

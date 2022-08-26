@@ -3,14 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StepsRouter = void 0;
+exports.SolutionRouter = void 0;
 const express_1 = __importDefault(require("express"));
-const steps_1 = require("../services/steps");
+const solutions_1 = require("../services/solutions");
 const router = express_1.default.Router();
-exports.StepsRouter = router;
+exports.SolutionRouter = router;
 // GET
 router.route("/").get((req, res) => {
-    (0, steps_1.getSteps)()
+    (0, solutions_1.getSolutions)()
         .then((v) => {
         res.status(200);
         res.send(v);
@@ -20,7 +20,7 @@ router.route("/").get((req, res) => {
     });
 });
 router.route("/:id").get((req, res) => {
-    (0, steps_1.getStep)(req.params.id)
+    (0, solutions_1.getSolution)(req.params.id)
         .then((v) => {
         res.status(200);
         res.send(v);
@@ -31,7 +31,7 @@ router.route("/:id").get((req, res) => {
 });
 // POST
 router.route("/").post((req, res) => {
-    (0, steps_1.createStep)(req.body)
+    (0, solutions_1.createSolution)(req.body)
         .then((v) => {
         res.status(201);
         res.send(v);
@@ -42,7 +42,7 @@ router.route("/").post((req, res) => {
 });
 // PUT
 router.route("/:id").put((req, res) => {
-    (0, steps_1.updateStep)(req.params.id, req.body)
+    (0, solutions_1.updateSolution)(req.params.id, req.body)
         .then((v) => {
         res.status(200);
         res.send(v);
@@ -53,7 +53,7 @@ router.route("/:id").put((req, res) => {
 });
 // DELETE
 router.route("/:id").delete((req, res) => {
-    (0, steps_1.deleteStep)(req.params.id)
+    (0, solutions_1.deleteSolution)(req.params.id)
         .then((v) => {
         res.status(204);
         res.send(v);
@@ -62,4 +62,4 @@ router.route("/:id").delete((req, res) => {
         res.sendStatus(400);
     });
 });
-//# sourceMappingURL=steps.js.map
+//# sourceMappingURL=solutions.js.map

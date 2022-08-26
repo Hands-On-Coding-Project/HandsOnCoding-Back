@@ -6,12 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const steps_1 = require("./routes/steps");
+const routes_1 = require("./routes/v1/routes");
 dotenv_1.default.config();
 const port = process.env.PORT;
 const app = (0, express_1.default)();
 app.use(body_parser_1.default.json());
-app.use("/api/steps", steps_1.StepsRouter);
+app.use("/api/v1", routes_1.V1Router);
 app.get("/api", (req, res) => {
     res.send("<h1>Welcome to the Hands On Coding API!</h1>" +
         '<li>Steps: <a href="steps">"/steps"</a></li>');
