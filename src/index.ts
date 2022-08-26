@@ -16,7 +16,6 @@ app.get( "/api", ( req: Request, res: Response) => {
     res.send( "<h1>Welcome to the Hands On Coding API!</h1>" +
     '<li>Steps: <a href="steps">"/steps"</a></li>'
     );
-
 } );
 
 app.listen( port, () => {

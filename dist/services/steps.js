@@ -12,35 +12,56 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createStep = exports.getSteps = exports.getStep = void 0;
+exports.deleteStep = exports.updateStep = exports.createStep = exports.getStep = exports.getSteps = void 0;
 const prisma_1 = __importDefault(require("../utils/prisma"));
 function getSteps() {
     return __awaiter(this, void 0, void 0, function* () {
-        const steps = yield prisma_1.default.step.findMany();
-        return steps;
+        const result = yield prisma_1.default.step.findMany();
+        return result;
     });
 }
 exports.getSteps = getSteps;
 function getStep(id) {
     return __awaiter(this, void 0, void 0, function* () {
-        const step = yield prisma_1.default.step.findUnique({
+        const result = yield prisma_1.default.step.findUnique({
             where: {
                 id
             },
         });
-        return step;
+        return result;
     });
 }
 exports.getStep = getStep;
 function createStep(step) {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        const result = yield ((_a = prisma_1.default.step) === null || _a === void 0 ? void 0 : _a.create({
-            data: {
-                description: step.description,
-            },
-        }));
+        const result = yield prisma_1.default.step.create({
+            data: step,
+        });
+        return result;
     });
 }
 exports.createStep = createStep;
-//# sourceMappingURL=Step.js.map
+function updateStep(id, step) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const result = yield prisma_1.default.step.update({
+            where: {
+                id
+            },
+            data: step,
+        });
+        return result;
+    });
+}
+exports.updateStep = updateStep;
+function deleteStep(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const result = yield prisma_1.default.step.delete({
+            where: {
+                id
+            },
+        });
+        return result;
+    });
+}
+exports.deleteStep = deleteStep;
+//# sourceMappingURL=steps.js.map
