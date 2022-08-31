@@ -1,4 +1,4 @@
-import { Step } from "@prisma/client";
+import { Step, Template, Solution } from "@prisma/client";
 import prisma from "../utils/prisma";
 
 export async function getSteps(): Promise<Step[]> {
@@ -12,14 +12,30 @@ export async function getStep(id: string): Promise<Step | null> {
         where: {
             id
         },
+        include: {
+            template: true,
+            solution:true,
+        },
     })
 
     return result
 }
 
-export async function createStep(step: Step): Promise<Step> {
+export async function createStep(nestedStep: NestedStep): Promise<Step> {
+    const step = nestedStep
+    const template = nestedStep.template
+    const solution = nestedStep.solution
+
     const result: Step = await prisma.step.create({
-        data: step,
+        data: {
+            ...step,
+            template:{
+                create:template
+            },
+            solution:{
+                create:solution
+            }
+        }
     })
 
     return result
@@ -44,4 +60,9 @@ export async function deleteStep(id: string): Promise<Step> {
     })
 
     return result
+}
+
+interface NestedStep extends Step{
+    template?: Template
+    solution?: Solution
 }
