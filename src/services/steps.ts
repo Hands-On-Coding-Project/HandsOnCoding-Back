@@ -22,7 +22,7 @@ export async function getStep(id: string): Promise<Step | null> {
 }
 
 export async function createStep(nestedStep: NestedStep): Promise<Step> {
-    const step = nestedStep
+    const step: Step = nestedStep
     const template = nestedStep.template
     const solution = nestedStep.solution
 
@@ -41,14 +41,28 @@ export async function createStep(nestedStep: NestedStep): Promise<Step> {
     return result
 }
 
-export async function updateStep(id: string, step: Step): Promise<Step> {
+export async function updateStep(id: string, nestedStep: NestedStep): Promise<Step> {
+    const step: Step = nestedStep
+    const template = nestedStep.template
+    const solution = nestedStep.solution
+
     const result: Step = await prisma.step.update({
         where: {
             id
         },
-        data: step,
+        data: {
+            ...step,
+            template:{
+                delete: true,
+                create: template
+            },
+            solution:{
+                delete: true,
+                create:solution
+            }
+        }
     })
-
+    
     return result
 }
 

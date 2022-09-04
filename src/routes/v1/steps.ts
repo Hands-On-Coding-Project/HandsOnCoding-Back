@@ -11,7 +11,8 @@ router.route("/").get((req: Request, res: Response) => {
     res.send(v)
   })
   .catch((e) => {
-    res.sendStatus(400)
+    res.status(400)
+    res.send(e)
   })
 });
 
@@ -22,7 +23,8 @@ router.route("/:id").get((req: Request, res: Response) => {
     res.send(v)
   })
   .catch((e)=>{
-    res.sendStatus(400)
+    res.status(400)
+    res.send(e)
   })
 });
 
@@ -34,7 +36,8 @@ router.route("/").post((req: Request, res: Response) => {
     res.send(v)
   })
   .catch((e) => {
-    res.sendStatus(400)
+    res.status(400)
+    res.send(e)
   })
 });
 
@@ -46,7 +49,9 @@ router.route("/:id").put((req: Request, res: Response) => {
     res.send(v)
   })
   .catch((e) => {
-    res.sendStatus(400)
+    console.log(e)
+    res.status(400)
+    res.send(e)
   })
 });
 
@@ -58,7 +63,8 @@ router.route("/:id").delete((req: Request, res: Response) => {
     res.send(v)
   })
   .catch((e) => {
-    res.sendStatus(400)
+    res.status(400)
+    res.send(e)
   })
 });
 

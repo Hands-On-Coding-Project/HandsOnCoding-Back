@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import cors from 'cors';
 
 import { V1Router } from './routes/v1/routes'
 
@@ -8,6 +9,14 @@ dotenv.config();
 
 const port = process.env.PORT;
 const app: Express = express();
+
+app.use(cors());
+const allowedOrigins = ['http://localhost:3000'];
+
+const options: cors.CorsOptions = {
+  origin: allowedOrigins
+};
+app.use(cors(options));
 
 app.use(bodyParser.json());
 app.use("/api/v1", V1Router);

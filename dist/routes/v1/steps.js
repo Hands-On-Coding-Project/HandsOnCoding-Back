@@ -16,7 +16,8 @@ router.route("/").get((req, res) => {
         res.send(v);
     })
         .catch((e) => {
-        res.sendStatus(400);
+        res.status(400);
+        res.send(e);
     });
 });
 router.route("/:id").get((req, res) => {
@@ -26,7 +27,8 @@ router.route("/:id").get((req, res) => {
         res.send(v);
     })
         .catch((e) => {
-        res.sendStatus(400);
+        res.status(400);
+        res.send(e);
     });
 });
 // POST
@@ -37,7 +39,8 @@ router.route("/").post((req, res) => {
         res.send(v);
     })
         .catch((e) => {
-        res.sendStatus(400);
+        res.status(400);
+        res.send(e);
     });
 });
 // PUT
@@ -48,7 +51,8 @@ router.route("/:id").put((req, res) => {
         res.send(v);
     })
         .catch((e) => {
-        res.sendStatus(400);
+        res.status(400);
+        res.send(e);
     });
 });
 // DELETE
@@ -59,7 +63,8 @@ router.route("/:id").delete((req, res) => {
         res.send(v);
     })
         .catch((e) => {
-        res.sendStatus(400);
+        res.status(400);
+        res.send(e);
     });
 });
 //# sourceMappingURL=steps.js.map

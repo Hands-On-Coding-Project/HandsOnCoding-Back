@@ -27,27 +27,45 @@ function getStep(id) {
             where: {
                 id
             },
+            include: {
+                template: true,
+                solution: true,
+            },
         });
         return result;
     });
 }
 exports.getStep = getStep;
-function createStep(step) {
+function createStep(nestedStep) {
     return __awaiter(this, void 0, void 0, function* () {
+        const step = nestedStep;
+        const template = nestedStep.template;
+        const solution = nestedStep.solution;
         const result = yield prisma_1.default.step.create({
-            data: step,
+            data: Object.assign(Object.assign({}, step), { template: {
+                    create: template
+                }, solution: {
+                    create: solution
+                } })
         });
         return result;
     });
 }
 exports.createStep = createStep;
-function updateStep(id, step) {
+function updateStep(id, nestedStep) {
     return __awaiter(this, void 0, void 0, function* () {
+        const step = nestedStep;
+        const template = nestedStep.template;
+        const solution = nestedStep.solution;
         const result = yield prisma_1.default.step.update({
             where: {
                 id
             },
-            data: step,
+            data: Object.assign(Object.assign({}, step), { template: {
+                    update: template
+                }, solution: {
+                    update: solution
+                } })
         });
         return result;
     });

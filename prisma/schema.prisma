@@ -10,29 +10,77 @@ datasource db {
   url = env("DATABASE_URL")
 }
 
+model Course {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  description String?
+
+  resources Resource[] @relation("resource_course")
+
+  lessons Lesson[] @relation("lesson_course")
+}
+
+model Resource {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  link String
+
+  resourceId String @unique @db.ObjectId
+  course Course @relation("resource_course", fields: [resourceId], references: [id])
+}
+
+model Language {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  extension String
+  api String
+
+  lessons Lesson[] @relation("lesson_language")
+}
+
+model Lesson {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  start DateTime @default(now())
+  end DateTime?
+
+  courseId String @unique @db.ObjectId
+  course Course @relation("lesson_course", fields: [courseId], references: [id])
+
+  languageId String @unique @db.ObjectId
+  language Language @relation("lesson_language", fields: [languageId], references: [id])
+
+  steps Step[] @relation("step_lesson")
+}
+
 model Step {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   description String
 
-  template Template?
+  lessonId String @unique @db.ObjectId
+  lesson Lesson @relation("step_lesson", fields: [lessonId], references: [id])
 
-  solution  Solution?
+  template Template? @relation("step_template")
+
+  solution Solution? @relation("step_solution")
 }
 
 model Template {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   content String
+  updatedAt DateTime @updatedAt
 
-  stepId String @db.ObjectId @unique
-  step  Step @relation(fields: [stepId], references: [id])
+  stepId String @unique @db.ObjectId
+  step  Step @relation("step_template", fields: [stepId], references: [id])
 }
 
 model Solution {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   content String
+  updatedAt DateTime @updatedAt
 
-  stepId String @db.ObjectId @unique
-  step  Step @relation(fields: [stepId], references: [id])
+  stepId String @unique @db.ObjectId
+  step  Step @relation("step_solution",fields: [stepId], references: [id])
 }
