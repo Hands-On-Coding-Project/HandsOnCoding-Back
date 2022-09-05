@@ -62,9 +62,11 @@ function updateStep(id, nestedStep) {
                 id
             },
             data: Object.assign(Object.assign({}, step), { template: {
-                    update: template
+                    delete: true,
+                    create: template
                 }, solution: {
-                    update: solution
+                    delete: true,
+                    create: solution
                 } })
         });
         return result;

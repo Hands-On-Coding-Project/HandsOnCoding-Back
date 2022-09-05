@@ -62,7 +62,7 @@ export async function updateStep(id: string, nestedStep: NestedStep): Promise<St
             }
         }
     })
-    
+
     return result
 }
 
@@ -70,7 +70,7 @@ export async function deleteStep(id: string): Promise<Step> {
     const result: Step = await prisma.step.delete({
         where: {
             id
-        },
+        }
     })
 
     return result
