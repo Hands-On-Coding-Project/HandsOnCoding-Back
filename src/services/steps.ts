@@ -1,4 +1,5 @@
 import { Step, Template, Solution } from "@prisma/client";
+import { truncate } from "fs";
 import prisma from "../utils/prisma";
 
 export async function getSteps(): Promise<Step[]> {
@@ -46,6 +47,18 @@ export async function updateStep(id: string, nestedStep: NestedStep): Promise<St
     const template = nestedStep.template
     const solution = nestedStep.solution
 
+    const actualTemplate: Template | null = await prisma.template.findUnique({
+        where:{
+            stepId:id
+        }
+    })
+
+    const actualSolution: Template | null = await prisma.solution.findUnique({
+        where:{
+            stepId:id
+        }
+    })
+
     const result: Step = await prisma.step.update({
         where: {
             id
@@ -53,11 +66,11 @@ export async function updateStep(id: string, nestedStep: NestedStep): Promise<St
         data: {
             ...step,
             template:{
-                delete: true,
+                delete: (actualTemplate !== null),
                 create: template
             },
             solution:{
-                delete: true,
+                delete: (actualSolution !== null),
                 create:solution
             }
         }

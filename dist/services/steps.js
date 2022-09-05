@@ -78,7 +78,7 @@ function deleteStep(id) {
         const result = yield prisma_1.default.step.delete({
             where: {
                 id
-            },
+            }
         });
         return result;
     });

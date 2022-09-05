@@ -18,4 +18,15 @@ router.route("/reset").post((req, res) => {
         res.send(e);
     });
 });
+router.route("/default").post((req, res) => {
+    (0, testing_1.defaultStep)()
+        .then((v) => {
+        res.status(201);
+        res.send(v);
+    })
+        .catch((e) => {
+        res.status(400);
+        res.send(e);
+    });
+});
 //# sourceMappingURL=testing.js.map
