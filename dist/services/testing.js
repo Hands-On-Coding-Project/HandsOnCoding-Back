@@ -19,11 +19,11 @@ function reset() {
         const deleteTemplates = prisma_1.default.template.deleteMany();
         const deleteSolutions = prisma_1.default.solution.deleteMany();
         const deleteSteps = prisma_1.default.step.deleteMany();
-        // const deleteLessons = prisma.lesson.deleteMany()
-        // const deleteLanguages = prisma.language.deleteMany()
-        // const deleteResources = prisma.resource.deleteMany()
-        // const deleteCourses = prisma.course.deleteMany()
-        yield prisma_1.default.$transaction([deleteTemplates, deleteSolutions, deleteSteps /*,deleteLessons,deleteLanguages,deleteResources,deleteCourses*/]);
+        const deleteLessons = prisma_1.default.lesson.deleteMany();
+        const deleteLanguages = prisma_1.default.language.deleteMany();
+        const deleteResources = prisma_1.default.resource.deleteMany();
+        const deleteCourses = prisma_1.default.course.deleteMany();
+        yield prisma_1.default.$transaction([deleteTemplates, deleteSolutions, deleteSteps, deleteLessons, deleteLanguages, deleteResources, deleteCourses]);
     });
 }
 exports.reset = reset;

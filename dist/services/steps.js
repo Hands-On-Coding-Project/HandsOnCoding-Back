@@ -57,15 +57,25 @@ function updateStep(id, nestedStep) {
         const step = nestedStep;
         const template = nestedStep.template;
         const solution = nestedStep.solution;
+        const actualTemplate = yield prisma_1.default.template.findUnique({
+            where: {
+                stepId: id
+            }
+        });
+        const actualSolution = yield prisma_1.default.solution.findUnique({
+            where: {
+                stepId: id
+            }
+        });
         const result = yield prisma_1.default.step.update({
             where: {
                 id
             },
             data: Object.assign(Object.assign({}, step), { template: {
-                    delete: true,
+                    delete: (actualTemplate !== null),
                     create: template
                 }, solution: {
-                    delete: true,
+                    delete: (actualSolution !== null),
                     create: solution
                 } })
         });
