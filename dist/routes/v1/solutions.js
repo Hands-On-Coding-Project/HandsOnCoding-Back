@@ -35,7 +35,7 @@ exports.SolutionsRouter = router;
  *        - content
  *        - stepId
  *      examples:
- *        id: 63158ff83cd164cc4fda4282
+ *        id: 631411d97ceeeb5338fdd966
  *        name: main.py
  *        content: print(\"Hello world!\")
  *        updateAt: 2022-09-04T07:18:20.250Z

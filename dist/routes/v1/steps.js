@@ -26,30 +26,59 @@ exports.StepsRouter = router;
  *          description: The id of the existing lesson that uses this step.
  *        template:
  *          $ref: '#/components/schemas/Template'
+ *        solution:
+ *          $ref: '#/components/schemas/Solution'
  *      required:
- *        - name
- *        - content
- *        - stepId
+ *        - description
+ *        - lessonId
  *      examples:
  *        id: 63158ff83cd164cc4fda4282
- *        name: main.py
- *        content: print(\"Hello!\")
- *        updateAt: 2022-09-04T07:18:20.250Z
- *        stepId: 63158ff83cd164cc4fda4281
+ *        description: Print \"Hello world!\"
+ *        lessonId: 6314112d7ceeeb5338fdd955
+ *        template:
+ *          id: 63158ff83cd164cc4fda4281
+ *          name: main.py
+ *          content: print(\"Hello!\")
+ *          updateAt: 2022-09-04T07:18:20.250Z
+ *          stepId: 63158ff83cd164cc4fda4282
+ *        solution:
+ *          id: 63158ff83cd164cc4fda4281
+ *          name: main.py
+ *          content: print(\"Hello world!\")
+ *          updateAt: 2022-09-04T07:18:20.250Z
+ *          stepId: 63158ff83cd164cc4fda4282
  *  parameters:
- *    templateId:
+ *    stepId:
  *      in: path
  *      name: id
  *      required: true
  *      schema:
  *        type: string
- *      description: The template id.
+ *      description: The step id.
  *
  * tags:
- *  name: Templates
- *  description: Templates endpoint.
+ *  name: Steps
+ *  description: Steps endpoint.
  */
 // GET
+/**
+ * @swagger
+ * /steps:
+ *  get:
+ *    summary: Get all steps.
+ *    tags: [Steps]
+ *    responses:
+ *      200:
+ *        description: All the steps.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Step'
+ *      400:
+ *        description: An error occurred due to a bad request.
+ */
 router.route("/").get((req, res) => {
     (0, steps_1.getSteps)()
         .then((v) => {
@@ -61,6 +90,24 @@ router.route("/").get((req, res) => {
         res.send(e);
     });
 });
+/**
+ * @swagger
+ * /steps/{id}:
+ *  get:
+ *    summary: Get a step by id.
+ *    tags: [Steps]
+ *    parameters:
+ *      - $ref: '#/components/parameters/stepId'
+ *    responses:
+ *      200:
+ *        description: The step.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Step'
+ *      400:
+ *        description: An error occurred due to a bad request.
+ */
 router.route("/:id").get((req, res) => {
     (0, steps_1.getStep)(req.params.id)
         .then((v) => {
@@ -73,6 +120,28 @@ router.route("/:id").get((req, res) => {
     });
 });
 // POST
+/**
+ * @swagger
+ * /steps:
+ *  post:
+ *    summary: Create a step.
+ *    tags: [Steps]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Step'
+ *    responses:
+ *      200:
+ *        description: The created step.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Step'
+ *      400:
+ *        description: An error occurred due to a bad request.
+ */
 router.route("/").post((req, res) => {
     (0, steps_1.createStep)(req.body)
         .then((v) => {
@@ -85,6 +154,30 @@ router.route("/").post((req, res) => {
     });
 });
 // PUT
+/**
+ * @swagger
+ * /steps/{id}:
+ *  put:
+ *    summary: Update a step by id.
+ *    tags: [Steps]
+ *    parameters:
+ *      - $ref: '#/components/parameters/stepId'
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Step'
+ *    responses:
+ *      200:
+ *        description: The updated step.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Step'
+ *      400:
+ *        description: An error occurred due to a bad request.
+ */
 router.route("/:id").put((req, res) => {
     (0, steps_1.updateStep)(req.params.id, req.body)
         .then((v) => {
@@ -98,6 +191,24 @@ router.route("/:id").put((req, res) => {
     });
 });
 // DELETE
+/**
+ * @swagger
+ * /steps/{id}:
+ *  delete:
+ *    summary: Delete a step by id.
+ *    tags: [Steps]
+ *    parameters:
+ *      - $ref: '#/components/parameters/stepId'
+ *    responses:
+ *      200:
+ *        description: The deleted step.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Step'
+ *      400:
+ *        description: An error occurred due to a bad request.
+ */
 router.route("/:id").delete((req, res) => {
     (0, steps_1.deleteStep)(req.params.id)
         .then((v) => {
