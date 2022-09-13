@@ -9,6 +9,7 @@ const testing_1 = require("../../services/testing");
 const router = express_1.default.Router();
 exports.TestingRouter = router;
 /**
+ * @swagger
  * tags:
  *  name: Testing
  *  description: Testing endpoint. Methods only available in the testing environment.
@@ -40,7 +41,7 @@ router.route("/reset").post((req, res) => {
  * /testing/default:
  *  post:
  *    summary: Create a default structure for the entire database.
- *    tags: [Test]
+ *    tags: [Testing]
  *    responses:
  *      204:
  *        description: The structure has been generated.
