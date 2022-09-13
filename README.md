@@ -70,7 +70,7 @@ To run the REST API, just execute the command:
 
 For more information, you can access the API documentation via the route [http://localhost:8080/docs/](http://localhost:8080/docs).
 
-## Prisma Studio
+### Prisma Studio
 
 [Prisma Studio](https://www.prisma.io/studio) is a visual editor for the data in your database.
 
