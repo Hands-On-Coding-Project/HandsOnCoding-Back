@@ -22,15 +22,15 @@ To have full access to the database, you should enable your computer IP address 
 ### Installation
 
 1. Clone the repository
-    ```sh
+    ```bash
     git clone https://github.com/Esarac/HandsOnCoding-Back.git
     ```
 2. Go inside the project folder
-   ```sh
+   ```bash
    cd HandsOnCoding-Back
    ```
 3. Install npm packages
-   ```sh
+   ```bash
    npm i
    ```
 
@@ -42,7 +42,7 @@ In the [schema.prisma](https://github.com/Esarac/HandsOnCoding-Back/blob/main/pr
 
 To submit your changes into the database, use the following command:
 
-```sh
+```bash
 npm run db-push
 ```
 For more information, visit the [Prisma](https://www.prisma.io/docs/) webpage.
@@ -58,13 +58,13 @@ in the [.env.development](https://github.com/Esarac/HandsOnCoding-Back/blob/main
 
 To run the REST API, just execute the command:
 * Dev env
-  ```sh
+  ```bash
   npm start
-  or
+  # or
   npm run dev
   ```
 * Test env
-  ```sh
+  ```bash
   npm run test
   ```
 
@@ -77,11 +77,11 @@ For more information, you can access the API documentation via the route [http:/
 To open Prisma Studio, use the following command:
 
 * Dev env
-  ```sh
+  ```bash
   npm run ps-dev
   ```
 * Test env
-  ```sh
+  ```bash
   npm run ps-test
   ```
 
