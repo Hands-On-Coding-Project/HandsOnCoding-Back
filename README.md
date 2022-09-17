@@ -68,7 +68,7 @@ To run the REST API, just execute the command:
   npm run test
   ```
 
-For more information, you can access the API documentation via the route [http://localhost:8080/docs/](http://localhost:8080/docs).
+For more information, you can access the API documentation via the route [http://localhost:8080/api/v1/docs](http://localhost:8080/api/v1/docs).
 
 ### Prisma Studio
 

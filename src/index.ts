@@ -37,13 +37,3 @@ app.get( "/api", ( req: Request, res: Response) => {
 app.listen( port, () => {
     console.log(`🦌 API is listening on port http://localhost:${ port }/api`);
 } );
-
-// Swagger
-import swaggerUI from 'swagger-ui-express'
-import swaggerJsDoc from 'swagger-jsdoc'
-import {swaggerJsDocOptions, swaggerUIOptions} from './utils/swaggerOptions'
-
-const specs = swaggerJsDoc(swaggerJsDocOptions)
-
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(specs,swaggerUIOptions))
-// ...
