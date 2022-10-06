@@ -4,18 +4,18 @@ import { StepsRouter } from "./steps";
 import { SolutionsRouter } from './solutions'
 import { TemplatesRouter } from './templates'
 import { TestingRouter } from './testing'
+import { LessonsRouter } from './lessons'
 import { resourceLimits } from "worker_threads";
 
 const router: Router = express.Router();
 
-// Exposed
-if(process.env.NODE_ENV === 'test'){
-    console.log('Testing')
-    router.use("/testing", TestingRouter);
-}
 router.use("/solutions", SolutionsRouter);
 router.use("/templates", TemplatesRouter);
 router.use("/steps", StepsRouter);
+router.use("/lessons", LessonsRouter);
+if(process.env.NODE_ENV === 'test'){
+    router.use("/testing", TestingRouter);
+}
 
 // Swagger
 import swaggerUI from 'swagger-ui-express'

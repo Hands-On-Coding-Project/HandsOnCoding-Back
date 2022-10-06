@@ -19,10 +19,6 @@ const router: Router = express.Router();
  *        lessonId:
  *          type: string
  *          description: The id of the existing lesson that uses this step.
- *        template:
- *          $ref: '#/components/schemas/Template'
- *        solution:
- *          $ref: '#/components/schemas/Solution'
  *      required:
  *        - description
  *        - lessonId
@@ -30,18 +26,6 @@ const router: Router = express.Router();
  *        id: 63158ff83cd164cc4fda4282
  *        description: Print \"Hello world!\"
  *        lessonId: 6314112d7ceeeb5338fdd955
- *        template:
- *          id: 63158ff83cd164cc4fda4281
- *          name: main.py
- *          content: print(\"Hello!\")
- *          updateAt: 2022-09-04T07:18:20.250Z
- *          stepId: 63158ff83cd164cc4fda4282
- *        solution:
- *          id: 63158ff83cd164cc4fda4281
- *          name: main.py
- *          content: print(\"Hello world!\")
- *          updateAt: 2022-09-04T07:18:20.250Z
- *          stepId: 63158ff83cd164cc4fda4282
  *  parameters:
  *    stepId:
  *      in: path

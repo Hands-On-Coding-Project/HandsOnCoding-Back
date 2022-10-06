@@ -2,6 +2,7 @@ import { Step, Template, Solution } from "@prisma/client";
 import { truncate } from "fs";
 import prisma from "../utils/prisma";
 
+//Find
 export async function getSteps(): Promise<Step[]> {
     const result: Step[] = await prisma.step.findMany()
 
@@ -9,6 +10,16 @@ export async function getSteps(): Promise<Step[]> {
 }
 
 export async function getStep(id: string): Promise<Step | null> {
+    const result: Step | null = await prisma.step.findUnique({
+        where: {
+            id
+        }
+    })
+
+    return result
+}
+
+export async function getStepFull(id: string): Promise<Step | null> {
     const result: Step | null = await prisma.step.findUnique({
         where: {
             id
@@ -22,57 +33,25 @@ export async function getStep(id: string): Promise<Step | null> {
     return result
 }
 
-export async function createStep(nestedStep: NestedStep): Promise<Step> {
-    const step: Step = nestedStep
-    const template = nestedStep.template
-    const solution = nestedStep.solution
-
+//Create
+export async function createStep(step: Step): Promise<Step> {
     const result: Step = await prisma.step.create({
         data: {
-            ...step,
-            template:{
-                create:template
-            },
-            solution:{
-                create:solution
-            }
+            ...step
         }
     })
 
     return result
 }
 
-export async function updateStep(id: string, nestedStep: NestedStep): Promise<Step> {
-    const step: Step = nestedStep
-    const template = nestedStep.template
-    const solution = nestedStep.solution
-
-    const actualTemplate: Template | null = await prisma.template.findUnique({
-        where:{
-            stepId:id
-        }
-    })
-
-    const actualSolution: Template | null = await prisma.solution.findUnique({
-        where:{
-            stepId:id
-        }
-    })
-
+//Update
+export async function updateStep(id: string, step: Step): Promise<Step> {
     const result: Step = await prisma.step.update({
         where: {
             id
         },
         data: {
-            ...step,
-            template:{
-                delete: (actualTemplate !== null),
-                create: template
-            },
-            solution:{
-                delete: (actualSolution !== null),
-                create:solution
-            }
+            ...step
         }
     })
 
@@ -87,9 +66,4 @@ export async function deleteStep(id: string): Promise<Step> {
     })
 
     return result
-}
-
-interface NestedStep extends Step{
-    template?: Template
-    solution?: Solution
 }

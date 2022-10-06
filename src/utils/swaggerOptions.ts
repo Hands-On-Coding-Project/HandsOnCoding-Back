@@ -13,7 +13,7 @@ export const swaggerJsDocOptions = {
             }
         ]
     },
-    apis: ['./src/routes/v1/*.ts']
+    apis: ['**/*.ts']
 }
 
 export const swaggerUIOptions = {

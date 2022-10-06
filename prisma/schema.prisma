@@ -25,8 +25,8 @@ model Resource {
   title String
   link String
 
-  resourceId String @unique @db.ObjectId
-  course Course @relation("resource_course", fields: [resourceId], references: [id])
+  courseId String @db.ObjectId
+  course Course @relation("resource_course", fields: [courseId], references: [id])
 }
 
 model Language {
@@ -44,10 +44,10 @@ model Lesson {
   start DateTime @default(now())
   end DateTime?
 
-  courseId String @unique @db.ObjectId
+  courseId String @db.ObjectId
   course Course @relation("lesson_course", fields: [courseId], references: [id])
 
-  languageId String @unique @db.ObjectId
+  languageId String @db.ObjectId
   language Language @relation("lesson_language", fields: [languageId], references: [id])
 
   steps Step[] @relation("step_lesson")
@@ -57,7 +57,7 @@ model Step {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   description String
 
-  lessonId String @unique @db.ObjectId
+  lessonId String @db.ObjectId
   lesson Lesson @relation("step_lesson", fields: [lessonId], references: [id])
 
   template Template? @relation("step_template")

@@ -35,5 +35,5 @@ app.get( "/api", ( req: Request, res: Response) => {
 } );
 
 app.listen( port, () => {
-    console.log(`🦌 API is listening on port http://localhost:${ port }/api`);
-} );
+  console.log(`🦌 API is listening on port http://localhost:${ port }/api/v1 in the ${process.env.NODE_ENV} environment.`);
+});
