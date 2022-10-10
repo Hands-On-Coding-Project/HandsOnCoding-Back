@@ -30,8 +30,7 @@ model Resource {
 }
 
 model Language {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
+  name String @id @map("_id")
   extension String
   api String
 
@@ -47,8 +46,8 @@ model Lesson {
   courseId String @db.ObjectId
   course Course @relation("lesson_course", fields: [courseId], references: [id])
 
-  languageId String @db.ObjectId
-  language Language @relation("lesson_language", fields: [languageId], references: [id])
+  languageName String
+  language Language @relation("lesson_language", fields: [languageName], references: [name])
 
   steps Step[] @relation("step_lesson")
 }

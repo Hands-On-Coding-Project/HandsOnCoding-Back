@@ -33,10 +33,10 @@ export async function defaultStep() : Promise<Step>{
         data:{
             title:"Print",
             courseId:course.id,
-            languageId:language.id
+            languageName:"python"
         }
     })
-
+    
     const step: Step = await prisma.step.create({
         data:{
             description:'Print "Hello world!"',

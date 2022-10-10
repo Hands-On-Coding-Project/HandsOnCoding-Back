@@ -23,7 +23,7 @@ export async function getLesson(id: string): Promise<LessonNested | null> {
 
 //Create
 export async function createLesson(lesson: LessonDTO): Promise<Lesson> {
-    const { languageId, courseId, ...lessonInfo } = lesson
+    const { languageName, courseId, ...lessonInfo } = lesson
     const result: Lesson = await prisma.lesson.create({
         data: {
             ...lessonInfo,
@@ -34,7 +34,7 @@ export async function createLesson(lesson: LessonDTO): Promise<Lesson> {
             },
             language: {
                 connect:{
-                    id:languageId
+                    name:languageName
                 }
             }
         }
@@ -45,7 +45,7 @@ export async function createLesson(lesson: LessonDTO): Promise<Lesson> {
 
 //Update
 export async function updateLesson(id: string, lesson: LessonDTO): Promise<Lesson> {
-    const { languageId, courseId, ...lessonInfo } = lesson
+    const { languageName, courseId, ...lessonInfo } = lesson
     const result: Lesson = await prisma.lesson.update({
         where: {
             id
@@ -59,7 +59,7 @@ export async function updateLesson(id: string, lesson: LessonDTO): Promise<Lesso
             },
             language: {
                 connect:{
-                    id:languageId
+                    name:languageName
                 }
             }
         }
