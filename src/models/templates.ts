@@ -1,4 +1,4 @@
-import { Lesson } from "@prisma/client";
+import { Template } from "@prisma/client";
 
 /**
  * @swagger
@@ -32,7 +32,7 @@ import { Lesson } from "@prisma/client";
  *        start: 09-09-00
  *        lessonId: 6314112d7ceeeb5338fdd955
  */
-export type LessonDTO = Omit<Lesson, 'id'>;
+export interface TemplateDTO extends Omit<Template, 'id'>{};
 
 /**
  * @swagger
@@ -56,4 +56,4 @@ export type LessonDTO = Omit<Lesson, 'id'>;
  *          lessonId: 6314112d7ceeeb5338fdd955
  */
 
-export { Lesson };
+export { Template };

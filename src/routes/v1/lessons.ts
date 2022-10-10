@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from "express";
-import { Lesson, LessonDTO } from "../../dto/lessons";
+import { Lesson, LessonDTO, LessonNested } from "../../models/lessons";
 import { getLesson, getLessons, createLesson, updateLesson, deleteLesson } from "../../services/lessons";
 
 /**
@@ -59,22 +59,25 @@ router.route("/").get((req: Request, res: Response<Lesson[]>) => {
  *      - $ref: '#/components/parameters/lessonId'
  *    responses:
  *      200:
- *        description: The lesson.
+ *        description: The lesson with its steps.
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Lesson'
+ *              $ref: '#/components/schemas/LessonNested'
+ *      204:
+ *        description: The lesson can not be found.
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").get((req: Request, res: Response<Lesson>) => {
+router.route("/:id").get((req: Request, res: Response<LessonNested>) => {
   getLesson(req.params.id)
   .then((v) => {
     if(!v)
-      return res.status(204)
-    
-    res.status(200)
-    res.send(v)
+      res.sendStatus(204)
+    else{
+      res.status(200)
+      res.send(v)
+    }
   })
   .catch((e)=>{
     res.status(400)
@@ -96,7 +99,7 @@ router.route("/:id").get((req: Request, res: Response<Lesson>) => {
  *          schema:
  *            $ref: '#/components/schemas/LessonDTO'
  *    responses:
- *      200:
+ *      201:
  *        description: The created lesson.
  *        content:
  *          application/json:
@@ -105,7 +108,7 @@ router.route("/:id").get((req: Request, res: Response<Lesson>) => {
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/").post((req: Request<any, LessonDTO>, res: Response<Lesson>) => {
+router.route("/").post((req: Request<any, any, LessonDTO>, res: Response<Lesson>) => {
   createLesson(req.body)
   .then((v) => {
     res.status(201)
@@ -135,7 +138,7 @@ router.route("/").post((req: Request<any, LessonDTO>, res: Response<Lesson>) => 
  *            $ref: '#/components/schemas/LessonDTO'
  *    responses:
  *      200:
- *        description: The updated step.
+ *        description: The updated lesson.
  *        content:
  *          application/json:
  *            schema:
@@ -143,7 +146,7 @@ router.route("/").post((req: Request<any, LessonDTO>, res: Response<Lesson>) => 
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").put((req: Request, res: Response) => {
+router.route("/:id").put((req: Request<any, any, LessonDTO>, res: Response<Lesson>) => {
   updateLesson(req.params.id,req.body)
   .then((v) => {
     res.status(200)
@@ -174,10 +177,10 @@ router.route("/:id").put((req: Request, res: Response) => {
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").delete((req: Request, res: Response) => {
+router.route("/:id").delete((req: Request, res: Response<Lesson>) => {
   deleteLesson(req.params.id)
   .then((v) => {
-    res.status(204)
+    res.status(200)
     res.send(v)
   })
   .catch((e) => {

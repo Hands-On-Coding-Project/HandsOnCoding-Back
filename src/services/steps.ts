@@ -1,4 +1,4 @@
-import { Step, Template, Solution } from "@prisma/client";
+import { StepDTO, Step, StepNested} from "../models/steps";
 import { truncate } from "fs";
 import prisma from "../utils/prisma";
 
@@ -9,32 +9,22 @@ export async function getSteps(): Promise<Step[]> {
     return result
 }
 
-export async function getStep(id: string): Promise<Step | null> {
-    const result: Step | null = await prisma.step.findUnique({
+export async function getStep(id: string): Promise<StepNested | null> {
+    const result: StepNested | null = await prisma.step.findUnique({
         where: {
             id
+        },
+        include:{
+            template:true,
+            solution:true,
         }
     })
 
     return result
 }
 
-export async function getStepFull(id: string): Promise<Step | null> {
-    const result: Step | null = await prisma.step.findUnique({
-        where: {
-            id
-        },
-        include: {
-            template: true,
-            solution:true,
-        },
-    })
-
-    return result
-}
-
 //Create
-export async function createStep(step: Step): Promise<Step> {
+export async function createStep(step: StepDTO): Promise<Step> {
     const result: Step = await prisma.step.create({
         data: {
             ...step
@@ -45,7 +35,7 @@ export async function createStep(step: Step): Promise<Step> {
 }
 
 //Update
-export async function updateStep(id: string, step: Step): Promise<Step> {
+export async function updateStep(id: string, step: StepDTO): Promise<Step> {
     const result: Step = await prisma.step.update({
         where: {
             id

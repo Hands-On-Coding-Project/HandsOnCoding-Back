@@ -1,4 +1,4 @@
-import { Lesson } from "@prisma/client";
+import { LessonDTO, Lesson, LessonNested } from "../models/lessons";
 import prisma from "../utils/prisma";
 
 //Find
@@ -8,10 +8,13 @@ export async function getLessons(): Promise<Lesson[]> {
     return result
 }
 
-export async function getLesson(id: string): Promise<Lesson | null> {
-    const result: Lesson | null = await prisma.lesson.findUnique({
+export async function getLesson(id: string): Promise<LessonNested | null> {
+    const result: LessonNested | null = await prisma.lesson.findUnique({
         where: {
             id
+        },
+        include: {
+            steps: true
         }
     })
 
@@ -19,7 +22,7 @@ export async function getLesson(id: string): Promise<Lesson | null> {
 }
 
 //Create
-export async function createLesson(lesson: Lesson): Promise<Lesson> {
+export async function createLesson(lesson: LessonDTO): Promise<Lesson> {
     const { languageId, courseId, ...lessonInfo } = lesson
     const result: Lesson = await prisma.lesson.create({
         data: {
@@ -41,7 +44,7 @@ export async function createLesson(lesson: Lesson): Promise<Lesson> {
 }
 
 //Update
-export async function updateLesson(id: string, lesson: Lesson): Promise<Lesson> {
+export async function updateLesson(id: string, lesson: LessonDTO): Promise<Lesson> {
     const { languageId, courseId, ...lessonInfo } = lesson
     const result: Lesson = await prisma.lesson.update({
         where: {
