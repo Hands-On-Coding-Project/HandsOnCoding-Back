@@ -25,9 +25,15 @@ export async function getStep(id: string): Promise<StepNested | null> {
 
 //Create
 export async function createStep(step: StepDTO): Promise<Step> {
+    const { lessonId, ...stepInfo } = step
     const result: Step = await prisma.step.create({
         data: {
-            ...step
+            ...stepInfo,
+            lesson:{
+                connect:{
+                    id:lessonId
+                }
+            }
         }
     })
 
@@ -36,12 +42,18 @@ export async function createStep(step: StepDTO): Promise<Step> {
 
 //Update
 export async function updateStep(id: string, step: StepDTO): Promise<Step> {
+    const { lessonId, ...stepInfo } = step
     const result: Step = await prisma.step.update({
         where: {
             id
         },
         data: {
-            ...step
+            ...stepInfo,
+            lesson:{
+                connect:{
+                    id:lessonId
+                }
+            }
         }
     })
 

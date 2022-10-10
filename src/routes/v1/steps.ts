@@ -1,5 +1,6 @@
 import express, {Router, Request, Response} from "express";
 import { Step, StepDTO, StepNested } from "../../models/steps";
+import { Error } from "../../models/error";
 import { getSteps, getStep, createStep, updateStep, deleteStep } from "../../services/steps";
 
 const router: Router = express.Router();
@@ -40,7 +41,7 @@ const router: Router = express.Router();
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/").get((req: Request, res: Response<Step[]>) => {
+router.route("/").get((req: Request, res: Response<Step[] | Error>) => {
   getSteps()
   .then((v) => {
     res.status(200)
@@ -48,7 +49,11 @@ router.route("/").get((req: Request, res: Response<Step[]>) => {
   })
   .catch((e) => {
     res.status(400)
-    res.send(e)
+    const error: Error = {
+      type: "Request",
+      data: e
+    }
+    res.send(error)
   })
 });
 
@@ -72,11 +77,17 @@ router.route("/").get((req: Request, res: Response<Step[]>) => {
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").get((req: Request, res: Response<StepNested>) => {
+router.route("/:id").get((req: Request, res: Response<StepNested | Error>) => {
   getStep(req.params.id)
   .then((v) => {
-    if(!v)
-      res.sendStatus(204)
+    if(!v){
+      res.status(404)
+      const error: Error = {
+        type: "Not Found",
+        data: 'Item with id "'+req.params.id+'" not found'
+      }
+      res.send(error)
+    }
     else{
       res.status(200)
       res.send(v)
@@ -84,7 +95,11 @@ router.route("/:id").get((req: Request, res: Response<StepNested>) => {
   })
   .catch((e)=>{
     res.status(400)
-    res.send(e)
+    const error: Error = {
+      type: "Request",
+      data: e
+    }
+    res.send(error)
   })
 });
 
@@ -111,7 +126,7 @@ router.route("/:id").get((req: Request, res: Response<StepNested>) => {
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/").post((req: Request<any, any, StepDTO>, res: Response<Step>) => {
+router.route("/").post((req: Request<any, any, StepDTO>, res: Response<Step | Error>) => {
   createStep(req.body)
   .then((v) => {
     res.status(201)
@@ -119,7 +134,11 @@ router.route("/").post((req: Request<any, any, StepDTO>, res: Response<Step>) =>
   })
   .catch((e) => {
     res.status(400)
-    res.send(e)
+    const error: Error = {
+      type: "Request",
+      data: e
+    }
+    res.send(error)
   })
 });
 
@@ -148,16 +167,19 @@ router.route("/").post((req: Request<any, any, StepDTO>, res: Response<Step>) =>
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").put((req: Request<any, any, StepDTO>, res: Response<Step>) => {
+router.route("/:id").put((req: Request<any, any, StepDTO>, res: Response<Step | Error>) => {
   updateStep(req.params.id,req.body)
   .then((v) => {
     res.status(200)
     res.send(v)
   })
   .catch((e) => {
-    console.log(e)
     res.status(400)
-    res.send(e)
+    const error: Error = {
+      type: "Request",
+      data: e
+    }
+    res.send(error)
   })
 });
 
@@ -180,7 +202,7 @@ router.route("/:id").put((req: Request<any, any, StepDTO>, res: Response<Step>) 
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").delete((req: Request, res: Response<Step>) => {
+router.route("/:id").delete((req: Request, res: Response<Step | Error>) => {
   deleteStep(req.params.id)
   .then((v) => {
     res.status(200)
@@ -188,7 +210,11 @@ router.route("/:id").delete((req: Request, res: Response<Step>) => {
   })
   .catch((e) => {
     res.status(400)
-    res.send(e)
+    const error: Error = {
+      type: "Request",
+      data: e
+    }
+    res.send(error)
   })
 });
 

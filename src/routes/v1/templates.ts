@@ -1,4 +1,6 @@
 import express, {Router, Request, Response} from "express";
+import { TemplateDTO, Template } from "../../models/templates";
+import { Error } from "../../models/error";
 import { getTemplates, getTemplate, createTemplate, updateTemplate, deleteTemplate } from "../../services/templates";
 
 const router: Router = express.Router();
@@ -68,14 +70,19 @@ const router: Router = express.Router();
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/").get((req: Request, res: Response) => {
+router.route("/").get((req: Request, res: Response<Template[] | Error>) => {
   getTemplates()
   .then((v) => {
     res.status(200)
     res.send(v)
   })
   .catch((e) => {
-    res.sendStatus(400)// SHOULD BE 404 NOT FOUND
+    res.status(400)
+    const error: Error = {
+      type: "Request",
+      data: e
+    }
+    res.send(error)
   })
 });
 
@@ -97,14 +104,29 @@ router.route("/").get((req: Request, res: Response) => {
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").get((req: Request, res: Response) => {
+router.route("/:id").get((req: Request, res: Response<Template | Error>) => {
   getTemplate(req.params.id)
   .then((v) => {
-    res.status(200)
-    res.send(v)
+    if(!v){
+      res.status(404)
+      const error: Error = {
+        type: "Not Found",
+        data: 'Item with id "'+req.params.id+'" not found'
+      }
+      res.send(error)
+    }
+    else{
+      res.status(200)
+      res.send(v)
+    }
   })
   .catch((e)=>{
-    res.sendStatus(400)
+    res.status(400)
+    const error: Error = {
+      type: "Request",
+      data: e
+    }
+    res.send(error)
   })
 });
 
@@ -131,14 +153,19 @@ router.route("/:id").get((req: Request, res: Response) => {
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/").post((req: Request, res: Response) => {
+router.route("/").post((req: Request<any, any, TemplateDTO>, res: Response<Template | Error>) => {
   createTemplate(req.body)
   .then((v) => {
     res.status(201)
     res.send(v)
   })
   .catch((e) => {
-    res.sendStatus(400)
+    res.status(400)
+    const error: Error = {
+      type: "Request",
+      data: e
+    }
+    res.send(error)
   })
 });
 
@@ -167,14 +194,19 @@ router.route("/").post((req: Request, res: Response) => {
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").put((req: Request, res: Response) => {
+router.route("/:id").put((req: Request<any, any, TemplateDTO>, res: Response<Template | Error>) => {
   updateTemplate(req.params.id,req.body)
   .then((v) => {
     res.status(200)
     res.send(v)
   })
   .catch((e) => {
-    res.sendStatus(400)
+    res.status(400)
+    const error: Error = {
+      type: "Request",
+      data: e
+    }
+    res.send(error)
   })
 });
 
@@ -197,14 +229,19 @@ router.route("/:id").put((req: Request, res: Response) => {
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").delete((req: Request, res: Response) => {
+router.route("/:id").delete((req: Request, res: Response<Template | Error>) => {
   deleteTemplate(req.params.id)
   .then((v) => {
-    res.status(204)
+    res.status(200)
     res.send(v)
   })
   .catch((e) => {
-    res.sendStatus(400)
+    res.status(400)
+    const error: Error = {
+      type: "Request",
+      data: e
+    }
+    res.send(error)
   })
 });
 

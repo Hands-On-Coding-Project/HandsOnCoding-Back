@@ -1,4 +1,4 @@
-import { Solution } from "@prisma/client";
+import { SolutionDTO, Solution } from "../models/solutions";
 import prisma from "../utils/prisma";
 
 export async function getSolutions(): Promise<Solution[]> {
@@ -17,20 +17,36 @@ export async function getSolution(id: string): Promise<Solution | null> {
     return result
 }
 
-export async function createSolution(solution: Solution): Promise<Solution> {
+export async function createSolution(solution: SolutionDTO): Promise<Solution> {
+    const { stepId, ...solutionInfo } = solution
     const result: Solution = await prisma.solution.create({
-        data: solution,
+        data: {
+            ...solutionInfo,
+            step:{
+                connect:{
+                    id:stepId
+                }
+            }
+        },
     })
 
     return result
 }
 
-export async function updateSolution(id: string, solution: Solution): Promise<Solution> {
+export async function updateSolution(id: string, solution: SolutionDTO): Promise<Solution> {
+    const { stepId, ...solutionInfo } = solution
     const result: Solution = await prisma.solution.update({
         where: {
             id
         },
-        data: solution,
+        data: {
+            ...solutionInfo,
+            step:{
+                connect:{
+                    id:stepId
+                }
+            }
+        },
     })
 
     return result

@@ -1,4 +1,4 @@
-import { Template } from "@prisma/client";
+import { TemplateDTO, Template } from "../models/templates";
 import prisma from "../utils/prisma";
 
 export async function getTemplates(): Promise<Template[]> {
@@ -17,20 +17,38 @@ export async function getTemplate(id: string): Promise<Template | null> {
     return result
 }
 
-export async function createTemplate(template: Template): Promise<Template> {
+export async function createTemplate(template: TemplateDTO): Promise<Template> {
+    const { stepId, ...templateInfo } = template
+    console.log(template)
     const result: Template = await prisma.template.create({
-        data: template,
+        data:{
+            ...templateInfo,
+            step:{
+                connect:{
+                    id:stepId
+                }
+            }
+        }
     })
+    console.log(result)
 
     return result
 }
 
-export async function updateTemplate(id: string, template: Template): Promise<Template> {
+export async function updateTemplate(id: string, template: TemplateDTO): Promise<Template> {
+    const { stepId, ...templateInfo } = template
     const result: Template = await prisma.template.update({
         where: {
             id
         },
-        data: template,
+        data: {
+            ...templateInfo,
+            step:{
+                connect:{
+                    id:stepId
+                }
+            }
+        },
     })
 
     return result
