@@ -1,6 +1,7 @@
-import { TemplateDTO, Template } from "../models/templates";
+import { TemplateRawDTO, TemplateDTO, Template } from "../models/templates";
 import prisma from "../utils/prisma";
 
+//Find
 export async function getTemplates(): Promise<Template[]> {
     const result: Template[] = await prisma.template.findMany()
 
@@ -17,9 +18,39 @@ export async function getTemplate(id: string): Promise<Template | null> {
     return result
 }
 
+export async function getTemplateInStep(stepId: string): Promise<Template | null>{
+    const result: Template | null = await prisma.template.findUnique({
+        where: {
+            stepId
+        },
+    })
+
+    return result
+}
+
+// Upsert
+export async function upsertTemplateInStep(stepId: string, template: TemplateRawDTO): Promise<Template>{
+    const result: Template = await prisma.template.upsert({
+        where:{
+            stepId
+        },
+        update:template,
+        create:{
+            ...template,
+            step:{
+                connect:{
+                    id: stepId
+                }
+            }
+        }
+    })
+
+    return result
+}
+
+// Create
 export async function createTemplate(template: TemplateDTO): Promise<Template> {
     const { stepId, ...templateInfo } = template
-    console.log(template)
     const result: Template = await prisma.template.create({
         data:{
             ...templateInfo,
@@ -30,11 +61,11 @@ export async function createTemplate(template: TemplateDTO): Promise<Template> {
             }
         }
     })
-    console.log(result)
 
     return result
 }
 
+// Update
 export async function updateTemplate(id: string, template: TemplateDTO): Promise<Template> {
     const { stepId, ...templateInfo } = template
     const result: Template = await prisma.template.update({
@@ -54,10 +85,21 @@ export async function updateTemplate(id: string, template: TemplateDTO): Promise
     return result
 }
 
+// Delete
 export async function deleteTemplate(id: string): Promise<Template> {
     const result: Template = await prisma.template.delete({
         where: {
             id
+        },
+    })
+
+    return result
+}
+
+export async function deleteTemplateInStep(stepId: string): Promise<Template> {
+    const result: Template = await prisma.template.delete({
+        where: {
+            stepId
         },
     })
 

@@ -1,4 +1,4 @@
-import { StepDTO, Step, StepNested} from "../models/steps";
+import { StepDTO, Step, StepNested, StepRawDTO} from "../models/steps";
 import { truncate } from "fs";
 import prisma from "../utils/prisma";
 
@@ -7,6 +7,16 @@ export async function getSteps(): Promise<Step[]> {
     const result: Step[] = await prisma.step.findMany()
 
     return result
+}
+
+export async function getStepsInLesson(lessonId: string): Promise<Step[]> {
+    const result: Step[] = await prisma.step.findMany({
+        where:{
+            lessonId
+        }
+    })
+
+    return result;
 }
 
 export async function getStep(id: string): Promise<StepNested | null> {
@@ -26,9 +36,14 @@ export async function getStep(id: string): Promise<StepNested | null> {
 //Create
 export async function createStep(step: StepDTO): Promise<Step> {
     const { lessonId, ...stepInfo } = step
+
+    return createStepInLesson(lessonId, stepInfo)
+}
+
+export async function createStepInLesson(lessonId: string, step: StepRawDTO){
     const result: Step = await prisma.step.create({
         data: {
-            ...stepInfo,
+            ...step,
             lesson:{
                 connect:{
                     id:lessonId
