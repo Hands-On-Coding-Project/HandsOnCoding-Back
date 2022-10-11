@@ -1,4 +1,6 @@
 import { Course, Language, Lesson, Step } from "@prisma/client";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
+import { Scenario } from "../models/tests";
 import prisma from "../utils/prisma";
 
 export async function reset() {
@@ -13,8 +15,43 @@ export async function reset() {
     await prisma.$transaction([deleteTemplates,deleteSolutions,deleteSteps,deleteLessons,deleteLanguages,deleteResources,deleteCourses])
 }
 
+export async function setUpScene(scene: Scenario) : Promise<any>{
+    const { languages, courses } = scene;
+
+    //Languages
+    const languagesResult = await prisma.language.createMany({
+        data:languages
+    })
+
+    //Courses
+    const coursesResult = await Promise.all(
+        courses.map(async (course)=>{
+            const {lessons, resources, ...courseInfo} = course
+            const coursesResult = await prisma.course.create({
+                data:{
+                    ...courseInfo,
+                    resources:{
+                        createMany:{
+                            data:resources
+                        }
+                    }
+                }
+            })
+
+            //Lessons
+            const lessonsResult = await Promise.all(
+                lessons.map(async (course)=>{
+                    
+                })
+            )
+
+            return coursesResult
+        }
+    ))
+}
+
 export async function defaultStep() : Promise<Step>{
-    
+
 
     const course: Course = await prisma.course.create({
         data: {
