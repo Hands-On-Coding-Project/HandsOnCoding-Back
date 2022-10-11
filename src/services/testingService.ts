@@ -14,6 +14,8 @@ export async function reset() {
 }
 
 export async function defaultStep() : Promise<Step>{
+    
+
     const course: Course = await prisma.course.create({
         data: {
             title: "APO I",
