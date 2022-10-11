@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from "express";
-import { reset, defaultStep } from "../../services/testing";
+import { reset, defaultStep } from "../../services/testingService";
 
 const router: Router = express.Router();
 

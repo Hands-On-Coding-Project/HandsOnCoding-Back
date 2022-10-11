@@ -1,10 +1,10 @@
 import express, { Router } from "express";
 
-import { StepsRouter } from "./steps";
-import { SolutionsRouter } from './solutions'
-import { TemplatesRouter } from './templates'
-import { TestingRouter } from './testing'
-import { LessonsRouter } from './lessons'
+import { StepsRouter } from "./stepsRouter";
+import { SolutionsRouter } from './solutionsRouter'
+import { TemplatesRouter } from './templatesRouter'
+import { TestingRouter } from './testingRouter'
+import { LessonsRouter } from './lessonsRouter'
 import { resourceLimits } from "worker_threads";
 
 const router: Router = express.Router();
@@ -20,7 +20,7 @@ if(process.env.NODE_ENV === 'test'){
 // Swagger
 import swaggerUI from 'swagger-ui-express'
 import swaggerJsDoc from 'swagger-jsdoc'
-import {swaggerJsDocOptions, swaggerUIOptions} from '../../utils/swaggerOptions'
+import {swaggerJsDocOptions, swaggerUIOptions} from '../../utils/swagger'
 import fs from 'fs'
 
 const specs = swaggerJsDoc(swaggerJsDocOptions)

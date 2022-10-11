@@ -3,9 +3,9 @@ import { Step, StepDTO, StepNested } from "../../models/steps";
 import { Template, TemplateRawDTO } from "../../models/templates";
 import { Solution, SolutionRawDTO } from "../../models/solutions";
 import { Error } from "../../models/error";
-import { getSteps, getStep, createStep, updateStep, deleteStep } from "../../services/steps";
-import { deleteTemplateInStep, getTemplateInStep, upsertTemplateInStep } from "../../services/templates";
-import { getSolutionInStep, upsertSolutionInStep, deleteSolutionInStep } from "../../services/solutions";
+import { getSteps, getStep, createStep, updateStep, deleteStep } from "../../services/stepsService";
+import { deleteTemplateInStep, getTemplateInStep, upsertTemplateInStep } from "../../services/templatesService";
+import { getSolutionInStep, upsertSolutionInStep, deleteSolutionInStep } from "../../services/solutionsService";
 
 // # 1 Level
 const router: Router = express.Router();
@@ -21,7 +21,7 @@ const router: Router = express.Router();
  *      schema:
  *        type: string
  *      description: The step id.
- * 
+ *
  * tags:
  *  name: Steps
  *  description: Steps endpoint.

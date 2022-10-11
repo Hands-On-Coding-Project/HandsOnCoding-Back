@@ -1,10 +1,12 @@
-import express, { Router, Request, Response } from "express";
-import { Lesson, LessonDTO, LessonNested } from "../../models/lessons";
-import { Step, StepRawDTO } from "../../models/steps";
-import { Error } from "../../models/error";
-import { getLesson, getLessons, createLesson, updateLesson, deleteLesson } from "../../services/lessons";
-import { createStepInLesson, getSteps, getStepsInLesson } from "../../services/steps";
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LessonsRouter = void 0;
+const express_1 = __importDefault(require("express"));
+const lessonsService_1 = require("../../services/lessonsService");
+const stepsService_1 = require("../../services/stepsService");
 /**
  * parameters:
  *    lessonId:
@@ -18,10 +20,10 @@ import { createStepInLesson, getSteps, getStepsInLesson } from "../../services/s
  * tags:
  *  name: Lessons
  *  description: Lessons endpoint.
-*/
+ */
 // # 1 Level
-const router: Router = express.Router();
-
+const router = express_1.default.Router();
+exports.LessonsRouter = router;
 // GET
 /**
  * @swagger
@@ -41,19 +43,18 @@ const router: Router = express.Router();
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/").get((req: Request, res: Response<Lesson[] | Error>) => {
-  getLessons()
-    .then((v) => {
-      res.status(200)
-      res.send(v)
+router.route("/").get((req, res) => {
+    (0, lessonsService_1.getLessons)()
+        .then((v) => {
+        res.status(200);
+        res.send(v);
     })
-    .catch((e) => {
-      res.status(400)
-      const error: Error = { type: "Request", data: e }
-      res.send(error)
-    })
+        .catch((e) => {
+        res.status(400);
+        const error = { type: "Request", data: e };
+        res.send(error);
+    });
 });
-
 /**
  * @swagger
  * /lessons/{id}:
@@ -74,26 +75,25 @@ router.route("/").get((req: Request, res: Response<Lesson[] | Error>) => {
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").get((req: Request, res: Response<LessonNested | Error>) => {
-  getLesson(req.params.id)
-    .then((v) => {
-      if (!v) {
-        res.status(404)
-        const error: Error = { type: "Not Found", data: `Record with id "${req.params.id}" not found` }
-        res.send(error)
-      }
-      else {
-        res.status(200)
-        res.send(v)
-      }
+router.route("/:id").get((req, res) => {
+    (0, lessonsService_1.getLesson)(req.params.id)
+        .then((v) => {
+        if (!v) {
+            res.status(404);
+            const error = { type: "Not Found", data: `Record with id "${req.params.id}" not found` };
+            res.send(error);
+        }
+        else {
+            res.status(200);
+            res.send(v);
+        }
     })
-    .catch((e) => {
-      res.status(400)
-      const error: Error = { type: "Request", data: e }
-      res.send(error)
-    })
+        .catch((e) => {
+        res.status(400);
+        const error = { type: "Request", data: e };
+        res.send(error);
+    });
 });
-
 // POST
 /**
  * @swagger
@@ -117,19 +117,18 @@ router.route("/:id").get((req: Request, res: Response<LessonNested | Error>) => 
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/").post((req: Request<any, any, LessonDTO>, res: Response<Lesson | Error>) => {
-  createLesson(req.body)
-    .then((v) => {
-      res.status(201)
-      res.send(v)
+router.route("/").post((req, res) => {
+    (0, lessonsService_1.createLesson)(req.body)
+        .then((v) => {
+        res.status(201);
+        res.send(v);
     })
-    .catch((e) => {
-      res.status(400)
-      const error: Error = { type: "Request", data: e }
-      res.send(error)
-    })
+        .catch((e) => {
+        res.status(400);
+        const error = { type: "Request", data: e };
+        res.send(error);
+    });
 });
-
 // PUT
 /**
  * @swagger
@@ -155,19 +154,18 @@ router.route("/").post((req: Request<any, any, LessonDTO>, res: Response<Lesson 
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").put((req: Request<any, any, LessonDTO>, res: Response<Lesson | Error>) => {
-  updateLesson(req.params.id, req.body)
-    .then((v) => {
-      res.status(200)
-      res.send(v)
+router.route("/:id").put((req, res) => {
+    (0, lessonsService_1.updateLesson)(req.params.id, req.body)
+        .then((v) => {
+        res.status(200);
+        res.send(v);
     })
-    .catch((e) => {
-      res.status(400)
-      const error: Error = { type: "Request", data: e }
-      res.send(error)
-    })
+        .catch((e) => {
+        res.status(400);
+        const error = { type: "Request", data: e };
+        res.send(error);
+    });
 });
-
 // DELETE
 /**
  * @swagger
@@ -187,49 +185,45 @@ router.route("/:id").put((req: Request<any, any, LessonDTO>, res: Response<Lesso
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").delete((req: Request, res: Response<Lesson | Error>) => {
-  deleteLesson(req.params.id)
-    .then((v) => {
-      res.status(200)
-      res.send(v)
+router.route("/:id").delete((req, res) => {
+    (0, lessonsService_1.deleteLesson)(req.params.id)
+        .then((v) => {
+        res.status(200);
+        res.send(v);
     })
-    .catch((e) => {
-      res.status(400)
-      const error: Error = { type: "Request", data: e }
-      res.send(error)
-    })
+        .catch((e) => {
+        res.status(400);
+        const error = { type: "Request", data: e };
+        res.send(error);
+    });
 });
-
 // # 2 Level
-const stepsRouter: Router = express.Router({mergeParams:true});
+const stepsRouter = express_1.default.Router({ mergeParams: true });
 router.use("/:id/steps", stepsRouter);
-
 // GET
-stepsRouter.route("/").get((req: Request, res: Response<Step[] | Error>) => {
-  getStepsInLesson(req.params.id)
-    .then((v) => {
-      res.status(200)
-      res.send(v)
+stepsRouter.route("/").get((req, res) => {
+    (0, stepsService_1.getStepsInLesson)(req.params.id)
+        .then((v) => {
+        res.status(200);
+        res.send(v);
     })
-    .catch((e) => {
-      res.status(400)
-      const error: Error = { type: "Request", data: e }
-      res.send(error)
-    })
+        .catch((e) => {
+        res.status(400);
+        const error = { type: "Request", data: e };
+        res.send(error);
+    });
 });
-
 // POST
-stepsRouter.route("/").post((req: Request<any, any, StepRawDTO>, res: Response<Step | Error>) => {
-  createStepInLesson(req.params.id, req.body)
-    .then((v) => {
-      res.status(200)
-      res.send(v)
+stepsRouter.route("/").post((req, res) => {
+    (0, stepsService_1.createStepInLesson)(req.params.id, req.body)
+        .then((v) => {
+        res.status(200);
+        res.send(v);
     })
-    .catch((e) => {
-      res.status(400)
-      const error: Error = { type: "Request", data: e }
-      res.send(error)
-    })
-})
-
-export { router as LessonsRouter };
+        .catch((e) => {
+        res.status(400);
+        const error = { type: "Request", data: e };
+        res.send(error);
+    });
+});
+//# sourceMappingURL=lessonsRouter.js.map

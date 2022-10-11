@@ -1,7 +1,7 @@
 import { LessonDTO, Lesson, LessonNested } from "../models/lessons";
 import prisma from "../utils/prisma";
 
-//Find
+// Find
 export async function getLessons(): Promise<Lesson[]> {
     const result: Lesson[] = await prisma.lesson.findMany()
 
@@ -21,7 +21,7 @@ export async function getLesson(id: string): Promise<LessonNested | null> {
     return result
 }
 
-//Create
+// Create
 export async function createLesson(lesson: LessonDTO): Promise<Lesson> {
     const { languageName, courseId, ...lessonInfo } = lesson
     const result: Lesson = await prisma.lesson.create({
@@ -43,7 +43,7 @@ export async function createLesson(lesson: LessonDTO): Promise<Lesson> {
     return result
 }
 
-//Update
+// Update
 export async function updateLesson(id: string, lesson: LessonDTO): Promise<Lesson> {
     const { languageName, courseId, ...lessonInfo } = lesson
     const result: Lesson = await prisma.lesson.update({
@@ -68,7 +68,7 @@ export async function updateLesson(id: string, lesson: LessonDTO): Promise<Lesso
     return result
 }
 
-//Delete
+// Delete
 export async function deleteLesson(id: string): Promise<Lesson> {
     const result: Lesson = await prisma.lesson.delete({
         where: {

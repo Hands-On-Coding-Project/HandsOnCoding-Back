@@ -1,7 +1,7 @@
 import { TemplateRawDTO, TemplateDTO, Template } from "../models/templates";
 import prisma from "../utils/prisma";
 
-//Find
+// Find
 export async function getTemplates(): Promise<Template[]> {
     const result: Template[] = await prisma.template.findMany()
 

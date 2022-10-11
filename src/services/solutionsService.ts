@@ -28,7 +28,7 @@ export async function getSolutionInStep(stepId: string): Promise<Solution | null
     return result
 }
 
-//Upsert
+// Upsert
 export async function upsertSolutionInStep(stepId: string, solution: SolutionRawDTO): Promise<Solution>{
     const result: Solution = await prisma.solution.upsert({
         where:{

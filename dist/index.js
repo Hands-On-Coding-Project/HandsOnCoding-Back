@@ -32,13 +32,6 @@ app.get("/api", (req, res) => {
         '<li>Steps: <a href="steps">"/steps"</a></li>');
 });
 app.listen(port, () => {
-    console.log(`🦌 API is listening on port http://localhost:${port}/api`);
+    console.log(`🦌 API is listening on port http://localhost:${port}/api/v1/docs in the ${process.env.NODE_ENV} environment.`);
 });
-// Swagger
-const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
-const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
-const swaggerOptions_1 = require("./utils/swaggerOptions");
-const specs = (0, swagger_jsdoc_1.default)(swaggerOptions_1.swaggerJsDocOptions);
-app.use('/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(specs, swaggerOptions_1.swaggerUIOptions));
-// ...
 //# sourceMappingURL=index.js.map
