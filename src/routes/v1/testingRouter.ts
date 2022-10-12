@@ -1,5 +1,7 @@
 import express, { Router, Request, Response } from "express";
-import { reset, defaultStep } from "../../services/testingService";
+import { Scenario } from "../../models/tests";
+import { ScenarioDTO } from "../../models/tests";
+import { reset, defaultStep, setUpScene } from "../../services/testingService";
 
 const router: Router = express.Router();
 
@@ -45,13 +47,14 @@ router.route("/reset").post((req: Request, res: Response) => {
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/default").post((req: Request, res: Response) => {
-    defaultStep()
+router.route("/default").post((req: Request<any, any, ScenarioDTO>, res: Response<Scenario>) => {
+    setUpScene(req.body)
     .then((v)=>{
         res.status(201);
         res.send(v)
     })
     .catch((e)=>{
+        console.log(e)
         res.status(400);
         res.send(e)
     })

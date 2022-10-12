@@ -1,17 +1,19 @@
-import { Language, Resource, Template } from "@prisma/client";
-import { CourseDTO } from "./courses"
-import { LessonRawDTO } from "./lessons";
-import { StepRawDTO } from "./steps";
+import { Language, LanguageDTO } from "./languages";
+import { Course, CourseDTO } from "./courses";
+import { Resource, ResourceRawDTO } from "./resources";
+import { Lesson, LessonRawDTO } from "./lessons";
+import { StepNested, StepRawDTO } from "./steps";
+import { TemplateRawDTO } from "./templates";
 
-
-export interface Scenario{
+//Input
+export interface ScenarioDTO{
     courses: CourseFullDTO[]
-    languages: Language[]
+    languages: LanguageDTO[]
 }
 
 interface CourseFullDTO extends CourseDTO{
     lessons: LessonFullDTO[]
-    resources: Resource[]
+    resources: ResourceRawDTO[]
 }
 
 interface LessonFullDTO extends LessonRawDTO{
@@ -19,6 +21,21 @@ interface LessonFullDTO extends LessonRawDTO{
 }
 
 interface StepFullDTO extends StepRawDTO{
-    template?: Template
-    solution?: Template
+    template?: TemplateRawDTO
+    solution?: TemplateRawDTO
+}
+
+//Output
+export interface Scenario{
+    languages: Language[]
+    courses: CourseFull[]
+}
+
+interface CourseFull extends Course{
+    lessons: LessonFull[]
+    resources: Resource[]
+}
+
+interface LessonFull extends Lesson{
+    steps: StepNested[]
 }

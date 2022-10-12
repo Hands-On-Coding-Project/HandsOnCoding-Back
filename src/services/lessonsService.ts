@@ -1,4 +1,4 @@
-import { LessonDTO, Lesson, LessonNested } from "../models/lessons";
+import { LessonRawDTO, LessonDTO, Lesson, LessonNested } from "../models/lessons";
 import prisma from "../utils/prisma";
 
 // Find
@@ -22,6 +22,10 @@ export async function getLesson(id: string): Promise<LessonNested | null> {
 }
 
 // Create
+export async function createLessonInCourse(courseId: string, lesson: LessonRawDTO): Promise<Lesson>{
+    return createLesson({courseId, ...lesson})
+}
+
 export async function createLesson(lesson: LessonDTO): Promise<Lesson> {
     const { languageName, courseId, ...lessonInfo } = lesson
     const result: Lesson = await prisma.lesson.create({

@@ -1,7 +1,11 @@
-import { Course, Language, Lesson, Step } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import { Scenario } from "../models/tests";
 import prisma from "../utils/prisma";
+import { CourseDTO, Course } from "../models/courses";
+import { ResourceRawDTO, Resource } from "../models/resources";
+import { Scenario, ScenarioDTO } from "../models/tests";
+import { createLessonInCourse } from "./lessonsService";
+import { createStepInLesson } from "./stepsService";
+import { upsertTemplateInStep } from "./templatesService";
+import { upsertSolutionInStep } from "./solutionsService";
 
 export async function reset() {
     const deleteTemplates = prisma.template.deleteMany()
@@ -12,76 +16,76 @@ export async function reset() {
     const deleteResources = prisma.resource.deleteMany()
     const deleteCourses = prisma.course.deleteMany()
 
-    await prisma.$transaction([deleteTemplates,deleteSolutions,deleteSteps,deleteLessons,deleteLanguages,deleteResources,deleteCourses])
+    await prisma.$transaction([deleteTemplates, deleteSolutions, deleteSteps, deleteLessons, deleteLanguages, deleteResources, deleteCourses])
 }
 
-export async function setUpScene(scene: Scenario) : Promise<any>{
+export async function setUpScene(scene: ScenarioDTO): Promise<Scenario> {
+    await reset()
+    
     const { languages, courses } = scene;
 
-    //Languages
-    const languagesResult = await prisma.language.createMany({
-        data:languages
-    })
+    // All Languages
+    const languagesRes = await Promise.all(languages.map(async language => {
+        // Languages
+        const languageRes = await prisma.language.create({ data: language })//[Change]
+        return languageRes
+    }))
 
-    //Courses
-    const coursesResult = await Promise.all(
-        courses.map(async (course)=>{
-            const {lessons, resources, ...courseInfo} = course
-            const coursesResult = await prisma.course.create({
-                data:{
-                    ...courseInfo,
-                    resources:{
-                        createMany:{
-                            data:resources
-                        }
-                    }
-                }
-            })
+    // All Courses
+    const coursesRes = await Promise.all(courses.map(async ({ resources, lessons, ...course }) => {
+        //Course
+        const courseRes = await createCourse(course)//[Change]
 
-            //Lessons
-            const lessonsResult = await Promise.all(
-                lessons.map(async (course)=>{
-                    
-                })
-            )
+        // All Resources
+        const resourcesRes = await Promise.all(resources.map(async resource => {
+            // Resource
+            const resourceRes = await createResourceInCourse(courseRes.id, resource)//[Change]
+            return resourceRes
+        }))
 
-            return coursesResult
-        }
-    ))
+        // All Lessons
+        const lessonsRes = await Promise.all(lessons.map(async ({ steps, ...lesson }) => {
+            // Lesson
+            const lessonRes = await createLessonInCourse(courseRes.id, lesson)
+
+            // All Steps
+            const stepsRes = await Promise.all(steps.map(async ({ template, solution, ...step }) => {
+                // Step
+                const stepRes = await createStepInLesson(lessonRes.id, step)
+
+                const templateRes = template ? await upsertTemplateInStep(stepRes.id, template) : null
+
+                const solutionRes = solution ? await upsertSolutionInStep(stepRes.id, solution) : null
+
+                return { ...stepRes, template: templateRes, solution: solutionRes }
+            }))
+
+            return { ...lessonRes, steps: stepsRes }
+        }))
+
+        return { ...courseRes, resources: resourcesRes, lessons: lessonsRes }
+    }))
+
+    return { languages: languagesRes, courses: coursesRes }
 }
 
-export async function defaultStep() : Promise<Step>{
+// Delete
+async function createCourse(course: CourseDTO): Promise<Course> {//Delete
+    const result: Course = await prisma.course.create({ data: course })
+    return result
+}
 
-
-    const course: Course = await prisma.course.create({
+async function createResourceInCourse(courseId: string, resource: ResourceRawDTO): Promise<Resource> {// Delete
+    const result: Resource = await prisma.resource.create({
         data: {
-            title: "APO I",
-            description: "Algoritmos y programacion orientada a Objetos 1"
+            ...resource,
+            course: {
+                connect: {
+                    id: courseId
+                }
+            }
         }
     })
-
-    const language: Language = await prisma.language.create({
-        data:{
-            name:"python",
-            extension:"py",
-            api:"http://localhost:12345/code"
-        }
-    })
-
-    const lesson: Lesson = await prisma.lesson.create({
-        data:{
-            title:"Print",
-            courseId:course.id,
-            languageName:"python"
-        }
-    })
-
-    const step: Step = await prisma.step.create({
-        data:{
-            description:'Print "Hello world!"',
-            lessonId: lesson.id
-        }
-    })
-
-    return step
+    return result
 }
+// ...
