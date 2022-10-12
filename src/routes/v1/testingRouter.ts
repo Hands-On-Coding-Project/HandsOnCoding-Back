@@ -1,7 +1,7 @@
 import express, { Router, Request, Response } from "express";
 import { Scenario } from "../../models/tests";
 import { ScenarioDTO } from "../../models/tests";
-import { reset, defaultStep, setUpScene } from "../../services/testingService";
+import { reset, setUpScene } from "../../services/testingService";
 
 const router: Router = express.Router();
 
@@ -54,7 +54,6 @@ router.route("/default").post((req: Request<any, any, ScenarioDTO>, res: Respons
         res.send(v)
     })
     .catch((e)=>{
-        console.log(e)
         res.status(400);
         res.send(e)
     })
