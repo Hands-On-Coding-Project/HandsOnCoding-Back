@@ -47,7 +47,7 @@ router.route("/reset").post((req: Request, res: Response) => {
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/default").post((req: Request<any, any, ScenarioDTO>, res: Response<Scenario>) => {
+router.route("/scene").post((req: Request<any, any, ScenarioDTO>, res: Response<Scenario>) => {
     setUpScene(req.body)
     .then((v)=>{
         res.status(201);
