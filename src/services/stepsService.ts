@@ -1,6 +1,8 @@
 import { StepDTO, Step, StepNested, StepRawDTO} from "../models/steps";
 import { truncate } from "fs";
 import prisma from "../utils/prisma";
+import { deleteSolutionInStep } from "./solutionsService";
+import { deleteTemplateInStep } from "./templatesService";
 
 // Find
 export async function getSteps(): Promise<Step[]> {
@@ -75,7 +77,13 @@ export async function updateStep(id: string, step: StepDTO): Promise<Step> {
     return result
 }
 
-export async function deleteStep(id: string): Promise<Step> {
+export async function deleteStep(id: string, force=false): Promise<Step> {
+    if(force){
+        const step = await getStep(id)
+        if(step?.solution) await deleteSolutionInStep(id)
+        if(step?.template) await deleteTemplateInStep(id)
+    }
+
     const result: Step = await prisma.step.delete({
         where: {
             id

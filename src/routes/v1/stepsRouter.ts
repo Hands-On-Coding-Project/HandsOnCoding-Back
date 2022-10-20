@@ -10,6 +10,10 @@ import { getSolutionInStep, upsertSolutionInStep, deleteSolutionInStep } from ".
 // # 1 Level
 const router: Router = express.Router();
 
+interface stepQuery{
+  force?: boolean
+}
+
 /**
  * @swagger
  * components:
@@ -192,8 +196,8 @@ router.route("/:id").put((req: Request<any, any, StepDTO>, res: Response<Step | 
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").delete((req: Request, res: Response<Step | Error>) => {
-  deleteStep(req.params.id)
+router.route("/:id").delete((req: Request<any, any, any, stepQuery>, res: Response<Step | Error>) => {
+  deleteStep(req.params.id, req.query.force)
     .then((v) => {
       res.status(200)
       res.send(v)
