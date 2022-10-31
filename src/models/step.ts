@@ -1,6 +1,6 @@
-import { Step } from "@prisma/client"
 import { File } from "./file"
-
+import { Test } from "./test"
+ 
 
 /**
  * @swagger
@@ -52,7 +52,11 @@ export interface StepDTO extends Omit<Step, 'id'>{};
  *      required:
  *        - id
  */
-export { Step };
+export interface Step{
+    id: string;
+    description: string;
+    lessonId: string;
+};
 
 /**
  * @swagger
@@ -71,4 +75,5 @@ export { Step };
 export interface StepNested extends Step {
     template: File | null;
     solution: File | null;
+    tests: Test[]
 }

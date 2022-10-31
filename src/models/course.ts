@@ -1,10 +1,13 @@
-import { Course } from "@prisma/client";
 import { Lesson } from "./lessons"
-import { Resource } from "./resources"
+import { Resource } from "./resource"
 
 export interface CourseDTO extends Omit<Course, 'id'>{};
 
-export { Course };
+export interface Course{
+    id: string;
+    title: string;
+    description: string;
+};
 
 export interface CourseNested extends Course{
     lessons: Lesson[]

@@ -1,13 +1,15 @@
 import prisma from "../utils/prisma";
-import { CourseDTO, Course } from "../models/courses";
-import { ResourceRawDTO, Resource } from "../models/resources";
+import { CourseDTO, Course } from "../models/course";
+import { ResourceRawDTO, Resource } from "../models/resource";
 import { Scenario, ScenarioDTO } from "../models/testing";
 import { createLessonInCourse } from "./lessonsService";
 import { createStepInLesson } from "./stepsService";
 import { upsertTemplateInStep } from "./templatesService";
 import { upsertSolutionInStep } from "./solutionsService";
+import { createTestInStep } from "./testsService";
 
 export async function reset() {
+    const deleteTests = prisma.test.deleteMany()
     const deleteTemplates = prisma.template.deleteMany()
     const deleteSolutions = prisma.solution.deleteMany()
     const deleteSteps = prisma.step.deleteMany()
@@ -16,12 +18,12 @@ export async function reset() {
     const deleteResources = prisma.resource.deleteMany()
     const deleteCourses = prisma.course.deleteMany()
 
-    await prisma.$transaction([deleteTemplates, deleteSolutions, deleteSteps, deleteLessons, deleteLanguages, deleteResources, deleteCourses])
+    await prisma.$transaction([deleteTests, deleteTemplates, deleteSolutions, deleteSteps, deleteLessons, deleteLanguages, deleteResources, deleteCourses])
 }
 
 export async function setUpScene(scene: ScenarioDTO): Promise<Scenario> {
     await reset()
-    
+
     const { languages, courses } = scene;
 
     // All Languages
@@ -49,7 +51,7 @@ export async function setUpScene(scene: ScenarioDTO): Promise<Scenario> {
             const lessonRes = await createLessonInCourse(courseRes.id, lesson)
 
             // All Steps
-            const stepsRes = await Promise.all(steps.map(async ({ template, solution, ...step }) => {
+            const stepsRes = await Promise.all(steps.map(async ({ template, solution, tests, ...step }) => {
                 // Step
                 const stepRes = await createStepInLesson(lessonRes.id, step)
 
@@ -57,7 +59,11 @@ export async function setUpScene(scene: ScenarioDTO): Promise<Scenario> {
 
                 const solutionRes = solution ? await upsertSolutionInStep(stepRes.id, solution) : null
 
-                return { ...stepRes, template: templateRes, solution: solutionRes }
+                const testsRes = await Promise.all(tests.map(async (test) => {
+                    return await createTestInStep(stepRes.id, test)
+                }))
+
+                return { ...stepRes, template: templateRes, solution: solutionRes, tests: testsRes }
             }))
 
             return { ...lessonRes, steps: stepsRes }
@@ -69,7 +75,7 @@ export async function setUpScene(scene: ScenarioDTO): Promise<Scenario> {
     return { languages: languagesRes, courses: coursesRes }
 }
 
-// Delete
+// [Delete]
 async function createCourse(course: CourseDTO): Promise<Course> {//Delete
     const result: Course = await prisma.course.create({ data: course })
     return result

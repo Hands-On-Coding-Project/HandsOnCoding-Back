@@ -13,7 +13,7 @@ datasource db {
 model Course {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   title String
-  description String?
+  description String @default("")
 
   resources Resource[] @relation("resource_course")
 

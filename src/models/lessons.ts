@@ -1,5 +1,4 @@
-import { Lesson } from "@prisma/client";
-import { Step } from "./steps"
+import { Step } from "./step"
 
 /**
  * @swagger
@@ -64,7 +63,14 @@ export interface LessonDTO extends Omit<Lesson, 'id'>{};
  *      required:
  *          - id
  */
-export { Lesson };
+export interface Lesson{
+    id: string;
+    title: string;
+    start: Date;
+    end: Date | null;
+    courseId: string;
+    languageName: string;
+};
 
 /**
  * @swagger

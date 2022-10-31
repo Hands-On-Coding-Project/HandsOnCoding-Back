@@ -1,7 +1,7 @@
 import express, { Router, Request, Response } from "express";
 import { Lesson, LessonDTO, LessonNested } from "../../models/lessons";
-import { Step, StepRawDTO } from "../../models/steps";
-import { Error } from "../../models/error";
+import { Step, StepRawDTO } from "../../models/step";
+import { ErrorMessage } from "../../models/error";
 import { getLesson, getLessons, createLesson, updateLesson, deleteLesson } from "../../services/lessonsService";
 import { createStepInLesson, getSteps, getStepsInLesson } from "../../services/stepsService";
 
@@ -41,7 +41,7 @@ const router: Router = express.Router();
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/").get((req: Request, res: Response<Lesson[] | Error>) => {
+router.route("/").get((req: Request, res: Response<Lesson[] | ErrorMessage>) => {
   getLessons()
     .then((v) => {
       res.status(200)
@@ -49,7 +49,7 @@ router.route("/").get((req: Request, res: Response<Lesson[] | Error>) => {
     })
     .catch((e) => {
       res.status(400)
-      const error: Error = { type: "Request", data: e }
+      const error: ErrorMessage = { type: "Request", data: e }
       res.send(error)
     })
 });
@@ -74,12 +74,12 @@ router.route("/").get((req: Request, res: Response<Lesson[] | Error>) => {
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").get((req: Request, res: Response<LessonNested | Error>) => {
+router.route("/:id").get((req: Request, res: Response<LessonNested | ErrorMessage>) => {
   getLesson(req.params.id)
     .then((v) => {
       if (!v) {
         res.status(404)
-        const error: Error = { type: "Not Found", data: `Record with id "${req.params.id}" not found` }
+        const error: ErrorMessage = { type: "Not Found", data: `Record with id "${req.params.id}" not found` }
         res.send(error)
       }
       else {
@@ -89,7 +89,7 @@ router.route("/:id").get((req: Request, res: Response<LessonNested | Error>) => 
     })
     .catch((e) => {
       res.status(400)
-      const error: Error = { type: "Request", data: e }
+      const error: ErrorMessage = { type: "Request", data: e }
       res.send(error)
     })
 });
@@ -117,7 +117,7 @@ router.route("/:id").get((req: Request, res: Response<LessonNested | Error>) => 
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/").post((req: Request<any, any, LessonDTO>, res: Response<Lesson | Error>) => {
+router.route("/").post((req: Request<any, any, LessonDTO>, res: Response<Lesson | ErrorMessage>) => {
   createLesson(req.body)
     .then((v) => {
       res.status(201)
@@ -125,7 +125,7 @@ router.route("/").post((req: Request<any, any, LessonDTO>, res: Response<Lesson 
     })
     .catch((e) => {
       res.status(400)
-      const error: Error = { type: "Request", data: e }
+      const error: ErrorMessage = { type: "Request", data: e }
       res.send(error)
     })
 });
@@ -155,7 +155,7 @@ router.route("/").post((req: Request<any, any, LessonDTO>, res: Response<Lesson 
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").put((req: Request<any, any, LessonDTO>, res: Response<Lesson | Error>) => {
+router.route("/:id").put((req: Request<any, any, LessonDTO>, res: Response<Lesson | ErrorMessage>) => {
   updateLesson(req.params.id, req.body)
     .then((v) => {
       res.status(200)
@@ -163,7 +163,7 @@ router.route("/:id").put((req: Request<any, any, LessonDTO>, res: Response<Lesso
     })
     .catch((e) => {
       res.status(400)
-      const error: Error = { type: "Request", data: e }
+      const error: ErrorMessage = { type: "Request", data: e }
       res.send(error)
     })
 });
@@ -187,7 +187,7 @@ router.route("/:id").put((req: Request<any, any, LessonDTO>, res: Response<Lesso
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").delete((req: Request, res: Response<Lesson | Error>) => {
+router.route("/:id").delete((req: Request, res: Response<Lesson | ErrorMessage>) => {
   deleteLesson(req.params.id)
     .then((v) => {
       res.status(200)
@@ -195,7 +195,7 @@ router.route("/:id").delete((req: Request, res: Response<Lesson | Error>) => {
     })
     .catch((e) => {
       res.status(400)
-      const error: Error = { type: "Request", data: e }
+      const error: ErrorMessage = { type: "Request", data: e }
       res.send(error)
     })
 });
@@ -205,7 +205,7 @@ const stepsRouter: Router = express.Router({mergeParams:true});
 router.use("/:id/steps", stepsRouter);
 
 // GET
-stepsRouter.route("/").get((req: Request, res: Response<Step[] | Error>) => {
+stepsRouter.route("/").get((req: Request, res: Response<Step[] | ErrorMessage>) => {
   getStepsInLesson(req.params.id)
     .then((v) => {
       res.status(200)
@@ -213,13 +213,13 @@ stepsRouter.route("/").get((req: Request, res: Response<Step[] | Error>) => {
     })
     .catch((e) => {
       res.status(400)
-      const error: Error = { type: "Request", data: e }
+      const error: ErrorMessage = { type: "Request", data: e }
       res.send(error)
     })
 });
 
 // POST
-stepsRouter.route("/").post((req: Request<any, any, StepRawDTO>, res: Response<Step | Error>) => {
+stepsRouter.route("/").post((req: Request<any, any, StepRawDTO>, res: Response<Step | ErrorMessage>) => {
   createStepInLesson(req.params.id, req.body)
     .then((v) => {
       res.status(200)
@@ -227,7 +227,7 @@ stepsRouter.route("/").post((req: Request<any, any, StepRawDTO>, res: Response<S
     })
     .catch((e) => {
       res.status(400)
-      const error: Error = { type: "Request", data: e }
+      const error: ErrorMessage = { type: "Request", data: e }
       res.send(error)
     })
 })

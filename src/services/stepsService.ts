@@ -1,4 +1,4 @@
-import { StepDTO, Step, StepNested, StepRawDTO} from "../models/steps";
+import { StepDTO, Step, StepNested, StepRawDTO} from "../models/step";
 import { truncate } from "fs";
 import prisma from "../utils/prisma";
 import { deleteSolutionInStep } from "./solutionsService";
@@ -29,6 +29,7 @@ export async function getStep(id: string): Promise<StepNested | null> {
         include:{
             template:true,
             solution:true,
+            tests:true,
         }
     })
 

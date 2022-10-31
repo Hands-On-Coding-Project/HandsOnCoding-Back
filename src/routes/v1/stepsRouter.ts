@@ -1,9 +1,10 @@
 import express, { Router, Request, Response } from "express";
-import { Step, StepDTO, StepNested } from "../../models/steps";
-import { Error } from "../../models/error";
+import { Step, StepDTO, StepNested } from "../../models/step";
+import { ErrorMessage } from "../../models/error";
 import { getSteps, getStep, createStep, updateStep, deleteStep } from "../../services/stepsService";
 import { TemplatesRouter } from "./templatesRouter";
 import { SolutionsRouter } from "./solutionsRouter";
+import { TestsRouter } from "./testsRouter";
 
 // # 1 Level
 const router: Router = express.Router();
@@ -48,7 +49,7 @@ interface stepQuery{
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/").get((req: Request, res: Response<Step[] | Error>) => {
+router.route("/").get((req: Request, res: Response<Step[] | ErrorMessage>) => {
   getSteps()
     .then((v) => {
       res.status(200)
@@ -56,7 +57,7 @@ router.route("/").get((req: Request, res: Response<Step[] | Error>) => {
     })
     .catch((e) => {
       res.status(400)
-      const error: Error = { type: "Request", data: e }
+      const error: ErrorMessage = { type: "Request", data: e }
       res.send(error)
     })
 });
@@ -81,12 +82,12 @@ router.route("/").get((req: Request, res: Response<Step[] | Error>) => {
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").get((req: Request, res: Response<StepNested | Error>) => {
-  getStep(req.params.id)
+router.route("/:stepId").get((req: Request, res: Response<StepNested | ErrorMessage>) => {
+  getStep(req.params.stepId)
     .then((v) => {
       if (!v) {
         res.status(404)
-        const error: Error = { type: "Not Found", data: `Item with id "${req.params.id}" not found` }
+        const error: ErrorMessage = { type: "Not Found", data: `Item with id "${req.params.id}" not found` }
         res.send(error)
       }
       else {
@@ -96,7 +97,7 @@ router.route("/:id").get((req: Request, res: Response<StepNested | Error>) => {
     })
     .catch((e) => {
       res.status(400)
-      const error: Error = { type: "Request", data: e }
+      const error: ErrorMessage = { type: "Request", data: e }
       res.send(error)
     })
 });
@@ -124,7 +125,7 @@ router.route("/:id").get((req: Request, res: Response<StepNested | Error>) => {
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/").post((req: Request<any, any, StepDTO>, res: Response<Step | Error>) => {
+router.route("/").post((req: Request<any, any, StepDTO>, res: Response<Step | ErrorMessage>) => {
   createStep(req.body)
     .then((v) => {
       res.status(201)
@@ -132,7 +133,7 @@ router.route("/").post((req: Request<any, any, StepDTO>, res: Response<Step | Er
     })
     .catch((e) => {
       res.status(400)
-      const error: Error = { type: "Request", data: e }
+      const error: ErrorMessage = { type: "Request", data: e }
       res.send(error)
     })
 });
@@ -162,15 +163,15 @@ router.route("/").post((req: Request<any, any, StepDTO>, res: Response<Step | Er
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").put((req: Request<any, any, StepDTO>, res: Response<Step | Error>) => {
-  updateStep(req.params.id, req.body)
+router.route("/:stepId").put((req: Request<any, any, StepDTO>, res: Response<Step | ErrorMessage>) => {
+  updateStep(req.params.stepId, req.body)
     .then((v) => {
       res.status(200)
       res.send(v)
     })
     .catch((e) => {
       res.status(400)
-      const error: Error = { type: "Request", data: e }
+      const error: ErrorMessage = { type: "Request", data: e }
       res.send(error)
     })
 });
@@ -194,24 +195,27 @@ router.route("/:id").put((req: Request<any, any, StepDTO>, res: Response<Step | 
  *      400:
  *        description: An error occurred due to a bad request.
  */
-router.route("/:id").delete((req: Request<any, any, any, stepQuery>, res: Response<Step | Error>) => {
-  deleteStep(req.params.id, req.query.force)
+router.route("/:stepId").delete((req: Request<any, any, any, stepQuery>, res: Response<Step | ErrorMessage>) => {
+  deleteStep(req.params.stepId, req.query.force)
     .then((v) => {
       res.status(200)
       res.send(v)
     })
     .catch((e) => {
       res.status(400)
-      const error: Error = { type: "Request", data: e }
+      const error: ErrorMessage = { type: "Request", data: e }
       res.send(error)
     })
 });
 
 // # 2 Level
 // ## Template
-router.use("/:id/template", TemplatesRouter);
+router.use("/:stepId/template", TemplatesRouter);
 
 // ## Solution
-router.use("/:id/solution", SolutionsRouter);
+router.use("/:stepId/solution", SolutionsRouter);
+
+// ## Tests
+router.use("/:stepId/tests", TestsRouter);
 
 export { router as StepsRouter };
