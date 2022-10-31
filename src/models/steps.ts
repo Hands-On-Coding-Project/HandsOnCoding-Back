@@ -1,6 +1,5 @@
 import { Step } from "@prisma/client"
-import { Template } from "./templates"
-import { Solution } from "./solutions"
+import { File } from "./file"
 
 
 /**
@@ -70,6 +69,6 @@ export { Step };
  *             $ref: '#/components/schemas/Solution'
  */
 export interface StepNested extends Step {
-    template: Template | null;
-    solution: Solution | null;
+    template: File | null;
+    solution: File | null;
 }

@@ -32,7 +32,7 @@ model Resource {
 model Language {
   name String @id @map("_id")
   extension String
-  api String
+  logo String
 
   lessons Lesson[] @relation("lesson_language")
 }
@@ -54,7 +54,7 @@ model Lesson {
 
 model Step {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  description String
+  description String @default("")
 
   lessonId String @db.ObjectId
   lesson Lesson @relation("step_lesson", fields: [lessonId], references: [id])
@@ -62,12 +62,14 @@ model Step {
   template Template? @relation("step_template")
 
   solution Solution? @relation("step_solution")
+
+  tests Test[] @relation("test_step")
 }
 
 model Template {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
-  content String
+  content String @default("")
   updatedAt DateTime @updatedAt
 
   stepId String @unique @db.ObjectId
@@ -77,9 +79,19 @@ model Template {
 model Solution {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
-  content String
+  content String @default("")
   updatedAt DateTime @updatedAt
 
   stepId String @unique @db.ObjectId
   step  Step @relation("step_solution",fields: [stepId], references: [id])
+}
+
+model Test {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  message String
+  input String @default("")
+  output String @default("")
+  
+  stepId String @db.ObjectId
+  step Step @relation("test_step", fields: [stepId], references: [id])
 }

@@ -1,16 +1,11 @@
 import express, { Router } from "express";
 
 import { StepsRouter } from "./stepsRouter";
-import { SolutionsRouter } from './solutionsRouter'
-import { TemplatesRouter } from './templatesRouter'
 import { TestingRouter } from './testingRouter'
 import { LessonsRouter } from './lessonsRouter'
-import { resourceLimits } from "worker_threads";
 
 const router: Router = express.Router();
 
-router.use("/solutions", SolutionsRouter);
-router.use("/templates", TemplatesRouter);
 router.use("/steps", StepsRouter);
 router.use("/lessons", LessonsRouter);
 if(process.env.NODE_ENV === 'test'){

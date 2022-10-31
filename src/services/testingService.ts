@@ -1,7 +1,7 @@
 import prisma from "../utils/prisma";
 import { CourseDTO, Course } from "../models/courses";
 import { ResourceRawDTO, Resource } from "../models/resources";
-import { Scenario, ScenarioDTO } from "../models/tests";
+import { Scenario, ScenarioDTO } from "../models/testing";
 import { createLessonInCourse } from "./lessonsService";
 import { createStepInLesson } from "./stepsService";
 import { upsertTemplateInStep } from "./templatesService";

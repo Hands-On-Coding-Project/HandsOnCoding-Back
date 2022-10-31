@@ -68,7 +68,12 @@ To run the REST API, just execute the command:
   npm run test
   ```
 
-For more information, you can access the API documentation via the route [http://localhost:8080/api/v1/docs](http://localhost:8080/api/v1/docs).
+If you want to use Docker, open Docker Desktop and run this commands instead:
+```bash
+docker build -t back:hoc .
+docker run --name hoc_back -p 8080:8080 back:hoc
+```
+In both cases, the service will be running at http://localhost:8080/. For more information, you can access the API documentation via the route [http://localhost:8080/api/v1/docs](http://localhost:8080/api/v1/docs).
 
 ### Prisma Studio
 

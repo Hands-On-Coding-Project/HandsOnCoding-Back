@@ -1,6 +1,6 @@
 import express, { Router, Request, Response } from "express";
-import { Scenario } from "../../models/tests";
-import { ScenarioDTO } from "../../models/tests";
+import { Scenario } from "../../models/testing";
+import { ScenarioDTO } from "../../models/testing";
 import { reset, setUpScene } from "../../services/testingService";
 
 const router: Router = express.Router();

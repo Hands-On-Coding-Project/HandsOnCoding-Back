@@ -1,11 +1,9 @@
 import express, { Router, Request, Response } from "express";
 import { Step, StepDTO, StepNested } from "../../models/steps";
-import { Template, TemplateRawDTO } from "../../models/templates";
-import { Solution, SolutionRawDTO } from "../../models/solutions";
 import { Error } from "../../models/error";
 import { getSteps, getStep, createStep, updateStep, deleteStep } from "../../services/stepsService";
-import { deleteTemplateInStep, getTemplateInStep, upsertTemplateInStep } from "../../services/templatesService";
-import { getSolutionInStep, upsertSolutionInStep, deleteSolutionInStep } from "../../services/solutionsService";
+import { TemplatesRouter } from "./templatesRouter";
+import { SolutionsRouter } from "./solutionsRouter";
 
 // # 1 Level
 const router: Router = express.Router();
@@ -211,109 +209,9 @@ router.route("/:id").delete((req: Request<any, any, any, stepQuery>, res: Respon
 
 // # 2 Level
 // ## Template
-const templateRouter: Router = express.Router({mergeParams:true});
-router.use("/:id/template", templateRouter);
-
-// GET
-templateRouter.route("/").get((req: Request, res: Response<Template | Error>) => {
-  getTemplateInStep(req.params.id)
-    .then((v) => {
-      if (!v) {
-        res.status(404)
-        const error: Error = { type: "Not Found", data: `Item with id "${req.params.id}" not found` }
-        res.send(error)
-      }
-      else {
-        res.status(200)
-        res.send(v)
-      }
-    })
-    .catch((e) => {
-      res.status(400)
-      const error: Error = { type: "Request", data: e }
-      res.send(error)
-    })
-})
-
-// POST
-templateRouter.route("/").post((req: Request<any, any, TemplateRawDTO>, res: Response<Template | Error>) => {
-  upsertTemplateInStep(req.params.id, req.body)
-    .then((v) => {
-      res.status(201)
-      res.send(v)
-    })
-    .catch((e) => {
-      res.status(400)
-      const error: Error = { type: "Request", data: e }
-      res.send(error)
-    })
-})
-
-// DELETE
-templateRouter.route("/").delete((req: Request, res: Response<Template | Error>) => {
-  deleteTemplateInStep(req.params.id)
-    .then((v) => {
-      res.status(200)
-      res.send(v)
-    })
-    .catch((e) => {
-      res.status(400)
-      const error: Error = { type: "Request", data: e }
-      res.send(error)
-    })
-})
+router.use("/:id/template", TemplatesRouter);
 
 // ## Solution
-const solutionRouter: Router = express.Router({mergeParams:true});
-router.use("/:id/solution", solutionRouter);
-
-// GET
-solutionRouter.route("/").get((req: Request, res: Response<Solution | Error>) => {
-  getSolutionInStep(req.params.id)
-    .then((v) => {
-      if (!v) {
-        res.status(404)
-        const error: Error = { type: "Not Found", data: `Item with id "${req.params.id}" not found` }
-        res.send(error)
-      }
-      else {
-        res.status(200)
-        res.send(v)
-      }
-    })
-    .catch((e) => {
-      res.status(400)
-      const error: Error = { type: "Request", data: e }
-      res.send(error)
-    })
-})
-
-// POST
-solutionRouter.route("/").post((req: Request<any, any, SolutionRawDTO>, res: Response<Solution | Error>) => {
-  upsertSolutionInStep(req.params.id, req.body)
-    .then((v) => {
-      res.status(201)
-      res.send(v)
-    })
-    .catch((e) => {
-      res.status(400)
-      const error: Error = { type: "Request", data: e }
-      res.send(error)
-    })
-})
-
-// DELETE
-solutionRouter.route("/").delete((req: Request, res: Response<Solution | Error>) => {
-  deleteSolutionInStep(req.params.id)
-    .then((v) => {
-      res.status(200)
-      res.send(v)
-    })
-    .catch((e) => {
-      res.status(400)
-      const error: Error = { type: "Request", data: e }
-      res.send(error)
-    })
-})
+router.use("/:id/solution", SolutionsRouter);
 
 export { router as StepsRouter };

@@ -1,15 +1,15 @@
-import { TemplateRawDTO, TemplateDTO, Template } from "../models/templates";
+import { FileRawDTO, FileDTO, File } from "../models/file";
 import prisma from "../utils/prisma";
 
 // Find
-export async function getTemplates(): Promise<Template[]> {
-    const result: Template[] = await prisma.template.findMany()
+export async function getTemplates(): Promise<File[]> {
+    const result: File[] = await prisma.template.findMany()
 
     return result
 }
 
-export async function getTemplate(id: string): Promise<Template | null> {
-    const result: Template | null = await prisma.template.findUnique({
+export async function getTemplate(id: string): Promise<File | null> {
+    const result: File | null = await prisma.template.findUnique({
         where: {
             id
         },
@@ -18,8 +18,8 @@ export async function getTemplate(id: string): Promise<Template | null> {
     return result
 }
 
-export async function getTemplateInStep(stepId: string): Promise<Template | null>{
-    const result: Template | null = await prisma.template.findUnique({
+export async function getTemplateInStep(stepId: string): Promise<File | null>{
+    const result: File | null = await prisma.template.findUnique({
         where: {
             stepId
         },
@@ -29,8 +29,8 @@ export async function getTemplateInStep(stepId: string): Promise<Template | null
 }
 
 // Upsert
-export async function upsertTemplateInStep(stepId: string, template: TemplateRawDTO): Promise<Template>{
-    const result: Template = await prisma.template.upsert({
+export async function upsertTemplateInStep(stepId: string, template: FileRawDTO): Promise<File>{
+    const result: File = await prisma.template.upsert({
         where:{
             stepId
         },
@@ -49,9 +49,9 @@ export async function upsertTemplateInStep(stepId: string, template: TemplateRaw
 }
 
 // Create
-export async function createTemplate(template: TemplateDTO): Promise<Template> {
+export async function createTemplate(template: FileDTO): Promise<File> {
     const { stepId, ...templateInfo } = template
-    const result: Template = await prisma.template.create({
+    const result: File = await prisma.template.create({
         data:{
             ...templateInfo,
             step:{
@@ -66,9 +66,9 @@ export async function createTemplate(template: TemplateDTO): Promise<Template> {
 }
 
 // Update
-export async function updateTemplate(id: string, template: TemplateDTO): Promise<Template> {
+export async function updateTemplate(id: string, template: FileDTO): Promise<File> {
     const { stepId, ...templateInfo } = template
-    const result: Template = await prisma.template.update({
+    const result: File = await prisma.template.update({
         where: {
             id
         },
@@ -86,8 +86,8 @@ export async function updateTemplate(id: string, template: TemplateDTO): Promise
 }
 
 // Delete
-export async function deleteTemplate(id: string): Promise<Template> {
-    const result: Template = await prisma.template.delete({
+export async function deleteTemplate(id: string): Promise<File> {
+    const result: File = await prisma.template.delete({
         where: {
             id
         },
@@ -96,8 +96,8 @@ export async function deleteTemplate(id: string): Promise<Template> {
     return result
 }
 
-export async function deleteTemplateInStep(stepId: string): Promise<Template> {
-    const result: Template = await prisma.template.delete({
+export async function deleteTemplateInStep(stepId: string): Promise<File> {
+    const result: File = await prisma.template.delete({
         where: {
             stepId
         },

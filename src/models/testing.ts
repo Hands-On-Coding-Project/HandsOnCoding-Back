@@ -3,7 +3,7 @@ import { Course, CourseDTO } from "./courses";
 import { Resource, ResourceRawDTO } from "./resources";
 import { Lesson, LessonRawDTO } from "./lessons";
 import { StepNested, StepRawDTO } from "./steps";
-import { TemplateRawDTO } from "./templates";
+import { FileRawDTO } from "./file";
 
 //Input
 export interface ScenarioDTO{
@@ -21,8 +21,8 @@ interface LessonFullDTO extends LessonRawDTO{
 }
 
 interface StepFullDTO extends StepRawDTO{
-    template?: TemplateRawDTO
-    solution?: TemplateRawDTO
+    template?: FileRawDTO
+    solution?: FileRawDTO
 }
 
 //Output

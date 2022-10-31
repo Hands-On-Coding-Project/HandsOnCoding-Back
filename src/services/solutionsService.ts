@@ -1,15 +1,15 @@
-import { SolutionRawDTO, SolutionDTO, Solution } from "../models/solutions";
+import { FileRawDTO, FileDTO, File } from "../models/file";
 import prisma from "../utils/prisma";
 
 // Find
-export async function getSolutions(): Promise<Solution[]> {
-    const result: Solution[] = await prisma.solution.findMany()
+export async function getSolutions(): Promise<File[]> {
+    const result: File[] = await prisma.solution.findMany()
 
     return result
 }
 
-export async function getSolution(id: string): Promise<Solution | null> {
-    const result: Solution | null = await prisma.solution.findUnique({
+export async function getSolution(id: string): Promise<File | null> {
+    const result: File | null = await prisma.solution.findUnique({
         where: {
             id
         },
@@ -18,8 +18,8 @@ export async function getSolution(id: string): Promise<Solution | null> {
     return result
 }
 
-export async function getSolutionInStep(stepId: string): Promise<Solution | null>{
-    const result: Solution | null = await prisma.solution.findUnique({
+export async function getSolutionInStep(stepId: string): Promise<File | null>{
+    const result: File | null = await prisma.solution.findUnique({
         where: {
             stepId
         },
@@ -29,8 +29,8 @@ export async function getSolutionInStep(stepId: string): Promise<Solution | null
 }
 
 // Upsert
-export async function upsertSolutionInStep(stepId: string, solution: SolutionRawDTO): Promise<Solution>{
-    const result: Solution = await prisma.solution.upsert({
+export async function upsertSolutionInStep(stepId: string, solution: FileRawDTO): Promise<File>{
+    const result: File = await prisma.solution.upsert({
         where:{
             stepId
         },
@@ -49,9 +49,9 @@ export async function upsertSolutionInStep(stepId: string, solution: SolutionRaw
 }
 
 // Create
-export async function createSolution(solution: SolutionDTO): Promise<Solution> {
+export async function createSolution(solution: FileDTO): Promise<File> {
     const { stepId, ...solutionInfo } = solution
-    const result: Solution = await prisma.solution.create({
+    const result: File = await prisma.solution.create({
         data: {
             ...solutionInfo,
             step:{
@@ -66,9 +66,9 @@ export async function createSolution(solution: SolutionDTO): Promise<Solution> {
 }
 
 // Update
-export async function updateSolution(id: string, solution: SolutionDTO): Promise<Solution> {
+export async function updateSolution(id: string, solution: FileDTO): Promise<File> {
     const { stepId, ...solutionInfo } = solution
-    const result: Solution = await prisma.solution.update({
+    const result: File = await prisma.solution.update({
         where: {
             id
         },
@@ -86,8 +86,8 @@ export async function updateSolution(id: string, solution: SolutionDTO): Promise
 }
 
 // Delete
-export async function deleteSolution(id: string): Promise<Solution> {
-    const result: Solution = await prisma.solution.delete({
+export async function deleteSolution(id: string): Promise<File> {
+    const result: File = await prisma.solution.delete({
         where: {
             id
         },
@@ -96,8 +96,8 @@ export async function deleteSolution(id: string): Promise<Solution> {
     return result
 }
 
-export async function deleteSolutionInStep(stepId: string): Promise<Solution> {
-    const result: Solution = await prisma.solution.delete({
+export async function deleteSolutionInStep(stepId: string): Promise<File> {
+    const result: File = await prisma.solution.delete({
         where: {
             stepId
         },
