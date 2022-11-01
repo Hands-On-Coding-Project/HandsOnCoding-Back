@@ -1,13 +1,15 @@
 import express, { Router } from "express";
 
 import { StepsRouter } from "./stepsRouter";
-import { TestingRouter } from './testingRouter'
-import { LessonsRouter } from './lessonsRouter'
+import { TestingRouter } from './testingRouter';
+import { LessonsRouter } from './lessonsRouter';
+import { LanguagesRouter } from "./languagesRouter";
 
 const router: Router = express.Router();
 
 router.use("/steps", StepsRouter);
 router.use("/lessons", LessonsRouter);
+router.use("/languages", LanguagesRouter)
 if(process.env.NODE_ENV === 'test'){
     router.use("/testing", TestingRouter);
 }

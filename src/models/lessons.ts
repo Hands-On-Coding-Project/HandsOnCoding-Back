@@ -45,7 +45,10 @@ export interface LessonRawDTO extends Omit<LessonDTO, 'courseId'>{}
  *      required:
  *          - courseId
  */
-export interface LessonDTO extends Omit<Lesson, 'id'>{};
+export interface LessonDTO extends Omit<Lesson, 'id' | 'start' | 'end'>{
+    start?: Date;
+    end?: Date | null;
+};
 
 /**
  * @swagger
