@@ -20,8 +20,8 @@ router.route("/").get((req: Request, res: Response<Course[] | ErrorMessage>) => 
     })
 });
 
-router.route("/:courseId").get((req: Request, res: Response<CourseNested | ErrorMessage>) => {
-  getCourse(req.params.courseId)
+router.route("/:courseId").get((req: Request<any, any, any, {info?:'default'|'nested'}>, res: Response<CourseNested | ErrorMessage>) => {
+  getCourse(req.params.courseId, req.query.info)
     .then((v) => {
       if (!v) {
         res.status(404)

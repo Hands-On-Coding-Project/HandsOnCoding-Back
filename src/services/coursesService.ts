@@ -8,15 +8,18 @@ export async function getCourses(): Promise<Course[]> {
     return result
 }
 
-export async function getCourse(id: string): Promise<CourseNested | null> {
+export async function getCourse(id: string, info:'nested'|'default'='nested'): Promise<CourseNested | null> {
+    const lessons = info === 'nested'
+    const resources = info === 'nested'
+    
     const result: CourseNested | null = await prisma.course.findUnique({
         where: {
             id
         },
-        include: {
-            lessons: true,
-            resources: true,
-        },
+        include:{
+            lessons,
+            resources,
+        }
     })
 
     return result
