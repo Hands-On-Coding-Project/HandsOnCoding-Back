@@ -1,4 +1,4 @@
-import { LessonRawDTO, LessonDTO, Lesson, LessonNested } from "../models/lessons";
+import { LessonRawDTO, LessonDTO, Lesson, LessonNested } from "../models/lesson";
 import prisma from "../utils/prisma";
 
 // Find

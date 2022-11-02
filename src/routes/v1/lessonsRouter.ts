@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from "express";
-import { Lesson, LessonDTO, LessonNested } from "../../models/lessons";
+import { Lesson, LessonDTO, LessonNested } from "../../models/lesson";
 import { Step, StepRawDTO } from "../../models/step";
 import { ErrorMessage } from "../../models/error";
 import { getLesson, getLessons, createLesson, updateLesson, deleteLesson } from "../../services/lessonsService";

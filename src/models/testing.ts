@@ -1,7 +1,7 @@
 import { Language, LanguageDTO } from "./language";
 import { Course, CourseDTO } from "./course";
 import { Resource, ResourceRawDTO } from "./resource";
-import { Lesson, LessonRawDTO } from "./lessons";
+import { Lesson, LessonRawDTO } from "./lesson";
 import { StepNested, StepRawDTO } from "./step";
 import { FileRawDTO } from "./file";
 import { TestRawDTO } from "./test";

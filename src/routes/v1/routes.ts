@@ -1,22 +1,24 @@
 import express, { Router } from "express";
 
 import { StepsRouter } from "./stepsRouter";
-import { TestingRouter } from './testingRouter';
 import { LessonsRouter } from './lessonsRouter';
+import { CoursesRouter } from "./coursesRouter";
 import { LanguagesRouter } from "./languagesRouter";
+import { TestingRouter } from './testingRouter';
 
 const router: Router = express.Router();
 
 router.use("/steps", StepsRouter);
 router.use("/lessons", LessonsRouter);
 router.use("/languages", LanguagesRouter)
+router.use("/courses", CoursesRouter)
 if(process.env.NODE_ENV === 'test'){
     router.use("/testing", TestingRouter);
 }
 
 // Swagger
 import swaggerUI from 'swagger-ui-express'
-import swaggerJsDoc from 'swagger-jsdoc'
+import swaggerJsDoc from 'swagger-jsdoc' 
 import {swaggerJsDocOptions, swaggerUIOptions} from '../../utils/swagger'
 import fs from 'fs'
 

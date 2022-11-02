@@ -1,4 +1,4 @@
-import { Lesson } from "./lessons"
+import { Lesson } from "./lesson"
 import { Resource } from "./resource"
 
 export interface CourseDTO extends Omit<Course, 'id'>{};
