@@ -7,6 +7,8 @@ import { createStepInLesson } from "./stepsService";
 import { upsertTemplateInStep } from "./templatesService";
 import { upsertSolutionInStep } from "./solutionsService";
 import { createTestInStep } from "./testsService";
+import { Test } from "../models/test";
+import { StepNested } from "../models/step";
 
 export async function reset() {
     const deleteTests = prisma.test.deleteMany()
@@ -51,7 +53,8 @@ export async function setUpScene(scene: ScenarioDTO): Promise<Scenario> {
             const lessonRes = await createLessonInCourse(courseRes.id, lesson)
 
             // All Steps
-            const stepsRes = await Promise.all(steps.map(async ({ template, solution, tests, ...step }) => {
+            const stepsRes: StepNested[] = []
+            for(const { template, solution, tests, ...step} of steps){
                 // Step
                 const stepRes = await createStepInLesson(lessonRes.id, step)
 
@@ -59,12 +62,15 @@ export async function setUpScene(scene: ScenarioDTO): Promise<Scenario> {
 
                 const solutionRes = solution ? await upsertSolutionInStep(stepRes.id, solution) : null
 
-                const testsRes = await Promise.all(tests.map(async (test) => {
-                    return await createTestInStep(stepRes.id, test)
-                }))
+                // All tests
+                const testsRes: Test[] = []
+                for (const test of tests){
+                    // Test
+                    testsRes.push(await createTestInStep(stepRes.id, test))
+                }
 
-                return { ...stepRes, template: templateRes, solution: solutionRes, tests: testsRes }
-            }))
+                stepsRes.push({ ...stepRes, template: templateRes, solution: solutionRes, tests: testsRes })
+            }
 
             return { ...lessonRes, steps: stepsRes }
         }))
